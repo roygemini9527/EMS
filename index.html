@@ -1,0 +1,1216 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>桃園119大車隊外送現場攻略 v6.0</title>
+    <style>
+        :root {
+            --primary: #dc2626; /* Red-600 */
+            --primary-dark: #991b1b;
+            --bg-dark: #111827; /* Gray-900 */
+            --bg-card: #1f2937; /* Gray-800 */
+            --text-main: #f3f4f6; /* Gray-100 */
+            --text-sub: #9ca3af; /* Gray-400 */
+            --accent-p: #f59e0b; /* Amber for EMT-P */
+            --success: #10b981; /* Green */
+            --info: #3b82f6; /* Blue */
+            --border: #374151;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            padding-bottom: 100px;
+            line-height: 1.6;
+        }
+
+        /* --- Header & Controls --- */
+        header {
+            background-color: rgba(31, 41, 55, 0.98);
+            padding: 12px 16px;
+            position: sticky;
+            top: 0;
+            z-index: 50;
+            border-bottom: 1px solid var(--border);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.3);
+        }
+
+        h1 {
+            font-size: 1.25rem;
+            margin: 0;
+            color: #fca5a5;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            justify-content: center; /* 修改：置中 */
+            gap: 10px; /* 修改：增加間距 */
+            margin-bottom: 10px;
+            text-align: center; /* 修改：文字置中 */
+        }
+        
+        .version-tag {
+            font-size: 0.75rem;
+            background: rgba(255,255,255,0.1);
+            padding: 2px 8px;
+            border-radius: 12px;
+            color: var(--text-sub);
+        }
+
+        /* Control Row: Guide + Search */
+        .controls-row {
+            display: flex;
+            gap: 8px;
+            position: relative;
+        }
+
+        /* Guide Button (1/5 width) */
+        .guide-btn {
+            flex: 0 0 20%;
+            background-color: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.4);
+            color: var(--info);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.9rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+            user-select: none;
+        }
+        .guide-btn:active { background-color: rgba(59, 130, 246, 0.3); }
+
+        /* Guide Dropdown Panel */
+        .guide-panel {
+            position: absolute;
+            top: 110%;
+            left: 0;
+            width: 100%;
+            background-color: var(--bg-card);
+            border: 1px solid var(--info);
+            border-radius: 10px;
+            padding: 12px;
+            z-index: 100;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.8);
+            display: none;
+        }
+        .guide-panel.open { display: block; }
+        .guide-panel ol { padding-left: 20px; margin: 0; font-size: 0.9rem; color: #d1d5db; }
+        .guide-panel li { margin-bottom: 6px; }
+
+        /* Search Input (4/5 width) */
+        .search-input {
+            flex: 1;
+            background-color: #000;
+            border: 1px solid var(--border);
+            color: white;
+            padding: 12px;
+            border-radius: 10px;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: all 0.2s;
+        }
+        .search-input:focus { 
+            border-color: var(--accent-p); 
+            outline: none; 
+            background-color: #1a1a1a;
+        }
+
+        /* --- Tabs --- */
+        .nav-tabs {
+            display: flex;
+            gap: 10px;
+            overflow-x: auto;
+            padding: 12px 16px;
+            background-color: var(--bg-dark);
+            border-bottom: 1px solid var(--border);
+            position: sticky;
+            top: 118px; 
+            z-index: 40;
+            white-space: nowrap;
+            -webkit-overflow-scrolling: touch; 
+        }
+        .nav-tabs::-webkit-scrollbar { display: none; }
+
+        .tab-btn {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            color: var(--text-sub);
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .tab-btn.active { 
+            background: var(--primary); 
+            color: white; 
+            border-color: var(--primary); 
+            font-weight: bold; 
+            box-shadow: 0 0 10px rgba(220, 38, 38, 0.4);
+        }
+        
+        .tab-btn.p-mode { border-color: var(--accent-p); color: var(--accent-p); }
+        .tab-btn.p-mode.active { background: var(--accent-p); color: black; box-shadow: 0 0 10px rgba(245, 158, 11, 0.4); }
+        
+        .tab-btn.tutorial { border-color: var(--info); color: var(--info); }
+        .tab-btn.tutorial.active { background: var(--info); color: white; box-shadow: 0 0 10px rgba(59, 130, 246, 0.4); }
+
+        /* --- Content Cards --- */
+        .container { padding: 16px; max-width: 800px; margin: 0 auto; }
+        
+        .card {
+            background-color: var(--bg-card);
+            border-radius: 12px;
+            margin-bottom: 16px;
+            border: 1px solid var(--border);
+            overflow: hidden;
+            transition: transform 0.1s;
+        }
+        
+        .card.p-highlight { border-left: 4px solid var(--accent-p); }
+        .card.tut-highlight { border-left: 4px solid var(--info); }
+
+        .card-header {
+            padding: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to right, rgba(255,255,255,0.02), rgba(255,255,255,0.0));
+            cursor: pointer;
+        }
+        
+        .card-title { font-weight: 700; font-size: 1.1rem; color: #fff; line-height: 1.4; }
+        .card-id { 
+            font-size: 0.75rem; 
+            color: var(--text-sub); 
+            background: rgba(0,0,0,0.4); 
+            padding: 2px 8px; 
+            border-radius: 6px; 
+            margin-right: 10px; 
+            font-family: monospace;
+        }
+        .expand-icon { transition: transform 0.3s; color: var(--text-sub); }
+        .card.expanded .expand-icon { transform: rotate(180deg); color: white; }
+
+        .card-body { display: none; padding: 16px; border-top: 1px solid var(--border); background: rgba(0,0,0,0.1); }
+        .card.expanded .card-body { display: block; }
+
+        /* Content Typography */
+        p { margin: 0 0 10px 0; font-size: 0.95rem; color: #d1d5db; text-align: justify; line-height: 1.7; }
+        ul { margin: 8px 0; padding-left: 20px; }
+        li { margin-bottom: 8px; color: #e5e7eb; font-size: 0.95rem; }
+        strong { color: white; font-weight: 600; }
+        .long-text { white-space: pre-line; }
+
+        /* Styles for Special 15 Collapsible Content */
+        details.sp-detail {
+            margin-bottom: 12px;
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px;
+            background: rgba(255,255,255,0.03);
+            overflow: hidden;
+        }
+        details.sp-detail summary {
+            padding: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            color: var(--text-main);
+            background: rgba(255,255,255,0.05);
+            list-style: none;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        details.sp-detail summary::-webkit-details-marker { display: none; }
+        details.sp-detail summary::after { content: '+'; font-size: 1.2rem; font-weight: 300; }
+        details.sp-detail[open] summary::after { content: '-'; }
+        details.sp-detail[open] summary { border-bottom: 1px solid rgba(255,255,255,0.1); color: var(--info); }
+        .sp-content { padding: 15px; font-size: 0.95rem; color: #d1d5db; }
+        
+        .tag-block {
+            display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 0.8rem; margin-right: 6px; font-weight: bold;
+        }
+        .tag-red { background: rgba(220, 38, 38, 0.2); color: #fca5a5; border: 1px solid #dc2626; }
+        .tag-blue { background: rgba(59, 130, 246, 0.2); color: #93c5fd; border: 1px solid #3b82f6; }
+        .tag-green { background: rgba(16, 185, 129, 0.2); color: #86efac; border: 1px solid #10b981; }
+
+        /* Flowchart */
+        .flow-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin: 16px 0;
+            padding-left: 10px;
+            border-left: 2px solid var(--border);
+        }
+        
+        .flow-step {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid var(--border);
+            padding: 12px;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+            font-size: 0.95rem;
+        }
+        
+        .flow-step::before {
+            content: "";
+            position: absolute;
+            left: -12px;
+            top: 50%;
+            width: 10px;
+            height: 2px;
+            background: var(--border);
+        }
+
+        /* Drug & TP Cards */
+        .drug-box {
+            background: rgba(245, 158, 11, 0.08);
+            border: 1px solid rgba(245, 158, 11, 0.4);
+            border-radius: 8px;
+            padding: 14px;
+            margin-top: 16px;
+        }
+        
+        .drug-title {
+            color: var(--accent-p);
+            font-weight: 800;
+            font-size: 1.1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 12px;
+            border-bottom: 1px solid rgba(245, 158, 11, 0.2);
+            padding-bottom: 8px;
+        }
+        
+        .tp-badge {
+            background: var(--accent-p);
+            color: black;
+            font-size: 0.8rem;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+        }
+
+        .drug-card {
+            background: rgba(0,0,0,0.3);
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 3px solid var(--accent-p);
+        }
+
+        .info-row {
+            display: flex;
+            margin-bottom: 6px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 4px;
+        }
+        .info-row:last-child { border-bottom: none; margin-bottom: 0; padding-bottom: 0; }
+        
+        .info-label { width: 70px; color: var(--text-sub); font-size: 0.85rem; flex-shrink: 0; }
+        .info-val { color: #f3f4f6; font-size: 0.95rem; font-weight: 500; }
+        .info-val.danger { color: #fca5a5; } 
+        .info-val.success { color: #86efac; } 
+
+        /* FAB */
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 24px;
+            background-color: var(--accent-p);
+            color: #000;
+            width: 68px;
+            height: 68px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+            cursor: pointer;
+            z-index: 100;
+            font-size: 1.4rem;
+            border: 4px solid rgba(255,255,255,0.15);
+            transition: transform 0.2s;
+        }
+        .fab span { font-size: 0.75rem; font-weight: normal; margin-top: -4px;}
+        .fab:active { transform: scale(0.92); }
+
+        /* Section Titles */
+        .sec-header {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin: 20px 0 10px 0;
+            color: var(--primary-light);
+            font-weight: bold;
+            font-size: 1rem;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 5px;
+        }
+        
+        /* Tutorial styles */
+        .tut-step {
+            background: rgba(59, 130, 246, 0.1);
+            border-left: 3px solid var(--info);
+            padding: 12px;
+            margin-bottom: 12px;
+            border-radius: 0 4px 4px 0;
+        }
+        .tut-step strong { color: var(--info); font-size: 1rem; display: block; margin-bottom: 4px; }
+
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>桃園119大車隊外送現場攻略 <span class="version-tag">v6.0</span></h1>
+    
+    <div class="controls-row">
+        <div class="guide-btn" onclick="toggleGuide()">📖 說明</div>
+        <input type="text" class="search-input" id="searchInput" placeholder="🔍 搜尋：OHCA、中風、野外...">
+        
+        <div class="guide-panel" id="guidePanel">
+            <div style="font-weight:bold;color:#fff;margin-bottom:10px;">📖 使用說明</div>
+            <ol>
+                <li><strong>搜尋功能：</strong>在搜尋欄輸入關鍵字（如：OHCA、中風、燒傷），系統會自動篩選相關卡片。</li>
+                <li><strong>卡片操作：</strong>點擊卡片標題可展開查看詳細流程、關鍵評估數據與處置細節。</li>
+                <li><strong>TP 模式：</strong>點擊右下角黃色 <strong>TP 按鈕</strong>，畫面將只顯示高級救護技術員 (EMT-P) 的進階處置（如給藥、插管、電擊），過濾掉基礎流程，適合危急時刻快速查閱。</li>
+                <li><strong>離線功能：</strong>請參考分類選單最後一項「📱 離線功能」，將本檔案存入手機，無網路環境亦可使用。</li>
+            </ol>
+            <div style="text-align:right;margin-top:10px;color:var(--info);cursor:pointer;" onclick="toggleGuide()">[關閉]</div>
+        </div>
+    </div>
+</header>
+
+<div class="nav-tabs">
+    <div class="tab-btn active" onclick="filterCat('all')">全覽</div>
+    <div class="tab-btn p-mode" onclick="togglePMode()">TP 專區</div>
+    <div class="tab-btn" onclick="filterCat('general')">通用</div>
+    <div class="tab-btn" onclick="filterCat('airway')">呼吸道</div>
+    <div class="tab-btn" onclick="filterCat('medical')">內科</div>
+    <div class="tab-btn" onclick="filterCat('trauma')">創傷</div>
+    <div class="tab-btn" onclick="filterCat('special')">特殊</div>
+    <div class="tab-btn tutorial" onclick="filterCat('tutorial')">📱 離線功能</div>
+</div>
+
+<div class="container" id="contentArea"></div>
+
+<div class="fab" onclick="togglePMode()" id="fabBtn">
+    TP<span>模式</span>
+</div>
+
+<script>
+    function toggleGuide() {
+        const panel = document.getElementById('guidePanel');
+        panel.classList.toggle('open');
+    }
+
+    const protocols = [
+        // ====== 通用 (General) ======
+        {
+            id: "G-1", cat: "general", title: "通用一：緊急救護現場通用流程",
+            flow: ["到達現場 -> 停車於安全位置", "安全評估 (3S: Scene, Safety, Situation)", "自我保護 (BSI: 戴手套、口罩、護目鏡)", "判斷是否需支援 / 啟動大量傷病患機制", "判斷案件屬性 (創傷/非創傷)"],
+            key: [
+                "<strong>現場安全 (Scene Safety)</strong> 是所有救護的基礎。若現場有暴力威脅、化學物質洩漏、火災或倒塌風險，救護人員應立即撤退至安全區域，並請求警消或特種單位支援，切勿貿然進入危險區域。",
+                "<strong>資源評估：</strong>若傷病患人數超過 15 人，或危急個案超過 5 人，應立即回報指揮中心啟動「大量傷病患 (MCI)」機制，並建立指揮站進行檢傷分類。",
+                "<strong>感染控制：</strong>接觸任何患者前務必穿戴完整防護裝備。若懷疑呼吸道傳染病（如肺結核、COVID-19），應升級配戴 N95 口罩並儘量保持通風。"
+            ],
+            tp: null
+        },
+        {
+            id: "G-2", cat: "general", title: "通用二：非創傷現場流程",
+            flow: ["意識評估 (AVPU/GCS)", "ABCDE 初步評估", "病史詢問 (SAMPLE, OPQRST)", "生命徵象量測", "危急度判斷 & 處置"],
+            key: [
+                "<strong>意識與呼吸：</strong>若患者意識不清 (U) 且無適當呼吸/脈搏，應視為 OHCA，立即開始 CPR。若有呼吸但意識不清，應注意呼吸道是否通暢（鼾音/囉音）。",
+                "<strong>呼吸評估 (B)：</strong>正常成人呼吸速率 12-20 次/分。一般患者氧氣治療目標為 SpO2 ≥ 94%；若有 COPD 病史，目標調整為 88-92% 以避免二氧化碳滯留。",
+                "<strong>循環評估 (C)：</strong>檢查橈動脈（若摸不到則量頸動脈，暗示 SBP < 80 mmHg）。評估膚色（蒼白/發紺/大理石斑）、體溫及微血管充填時間 (CRT > 2秒表灌流差)。",
+                "<strong>病史詢問：</strong>善用 SAMPLE (症狀、過敏、藥物、病史、最後一餐、事件) 與 OPQRST (發作、誘因、性質、轉移、嚴重度、時間) 快速掌握病情。"
+            ],
+            tp: null
+        },
+        {
+            id: "G-3", cat: "general", title: "通用三：創傷現場流程",
+            flow: ["判斷頸椎限制 (SMR) 需求", "X (大出血止血) -> A -> B -> C", "快速創傷評估 (頭到腳)", "致命傷處置 (氣胸/連枷胸)", "上長背板/KED (視需求)"],
+            key: [
+                "<strong>頸椎限制 (SMR)：</strong>高能量機轉（高處墜落 > 6m、車禍車體變形、昏迷 GCS<15、頸背痛、四肢麻木）應假設頸椎受傷，立即給予頸圈及徒手固定，避免二次傷害。",
+                "<strong>X (Exsanguination)：</strong>在 ABC 之前優先處理動脈噴射出血。直接加壓無效時，應立即使用止血帶 (CAT)，綁在傷口近心端 5-8 公分處。",
+                "<strong>快速創傷評估：</strong>針對頭、頸、胸、腹、骨盆、四肢進行快速觸診與視診。注意頭部外傷是否伴隨 Cushing Triad (高血壓、緩脈、呼吸不規則)。",
+                "<strong>Load and Go：</strong>若生命徵象不穩定，不應在現場進行詳細包紮或骨折固定，應在救護車行進間完成處置，縮短現場停留時間。"
+            ],
+            tp: null
+        },
+        {
+            id: "G-4", cat: "general", title: "通用四：病情危急度判斷",
+            flow: ["生命徵象檢核", "創傷部位檢核", "創傷機轉檢核", "特殊狀況檢核"],
+            key: [
+                "<strong>生命徵象危急指標 (成人)：</strong><br>1. 呼吸 (RR): > 29 或 < 10 次/分<br>2. 心跳 (HR): > 150 或 < 50 次/分<br>3. 血壓 (SBP): > 200 或 < 90 mmHg<br>4. 血氧 (SpO2): < 90%<br>5. 意識 (GCS): < 14 分或急性改變<br>6. 體溫: > 41℃ 或 < 32℃",
+                "<strong>處置原則：</strong>符合任一項即為危急個案。應立即給予高濃度氧氣、建立 IV 管路、持續監測生命徵象，並預先通報接收醫院準備急救室。",
+                "<strong>特殊狀況：</strong>包含嚴重燒燙傷 (>25%)、吸入性嗆傷、氣管損傷、內臟外露、手腕/腳踝以上截肢、骨盆骨折、兩處以上長骨骨折、壓碎傷等。"
+            ],
+            tp: null
+        },
+        {
+            id: "G-5", cat: "general", title: "通用五：救護車內救護流程",
+            flow: ["持續監測生命徵象", "再評估處置效果 (二度評估)", "無線電回報醫院 (MIST)", "詳細身體檢查"],
+            key: [
+                "<strong>監測頻率：</strong>危急個案應至少每 5 分鐘評估一次生命徵象；非危急個案至少每 15 分鐘一次。若病情惡化（如意識變差、血壓下降），應立即重新執行 ABC 評估。",
+                "<strong>處置調整：</strong>依據 SpO2 調整氧氣流量。休克患者若無脊椎損傷疑慮，可抬高下肢 20-30 度。注意保暖，避免低體溫惡化凝血功能。",
+                "<strong>無線電回報 (MIST)：</strong><br>M: 機轉 (Mechanism/Medical complaint)<br>I: 傷勢/發現 (Injuries/Inspection)<br>S: 徵象 (Signs: GCS, BP, HR, RR, SpO2)<br>T: 處置 (Treatment given)",
+                "<strong>詳細檢查：</strong>在車上環境許可下，執行詳細的頭到腳身體檢查 (Secondary Survey)，尋找遺漏的傷口或病徵。"
+            ],
+            tp: {
+                action: "進階監測與處置",
+                desc: "TP 可在車上執行進階心臟監測 (12-lead ECG)。若 AED 建議電擊，可視路況停車或在安全狀況下電擊。若為不穩定心律 (頻脈/緩脈)，可考慮同步整流或 TCP。"
+            }
+        },
+        {
+            id: "G-6", cat: "general", title: "通用六：到達醫院後流程",
+            flow: ["車輛停妥", "協助移床", "檢傷交接 (MIST)", "填寫紀錄表", "車內消毒/補耗材"],
+            key: [
+                "<strong>交接重點：</strong>務必將患者到達醫院前的變化趨勢告知檢傷護理師。例如：「現場意識清楚，車上轉為嗜睡」、「血壓由 110 掉到 80」。",
+                "<strong>危急個案：</strong>確認檢傷護理師已接收訊息，並協助推入急救室。若有插管或使用急救藥物，需詳細說明給藥時間與劑量。",
+                "<strong>感染控制：</strong>離開前務必完成車內接觸面消毒。若載送傳染病患，需依規定進行終期消毒並更換相關耗材。",
+                "<strong>紀錄表：</strong>儘速完成電子救護紀錄表填寫與上傳，確保醫療資訊連續性。"
+            ],
+            tp: null
+        },
+
+        // ====== 線上 (Online) ======
+        {
+            id: "On-1", cat: "general", title: "線上一：線上醫療指導作業",
+            flow: ["判斷指導需求", "撥打指導專線/無線電", "報告病況與需求", "醫師覆核", "錄音存證"],
+            key: [
+                "<strong>需申請指導項目：</strong><br>1. TP 管制藥物給予（如 Morphine, Fentanyl, Midazolam - 視各縣市開放程度）<br>2. 嚴重創傷給予 TXA (Tranexamic Acid)<br>3. 拒絕送醫有爭議時 (如家屬要求不送醫但患者危急)<br>4. DNR 文件有疑義或現場家屬意見分歧<br>5. 終止急救 (Pronounce death) 之判定",
+                "<strong>通話要領：</strong>明確告知單位、姓名、級別。簡報患者性別、年齡、主訴、生命徵象、已做處置及「請求事項」。通話過程需全程錄音，並在紀錄表上註記指導醫師姓名與醫囑內容。"
+            ],
+            tp: null
+        },
+
+        // ====== 呼吸道 (Airway) ======
+        {
+            id: "Air-1", cat: "airway", title: "呼吸道一：氣管內管插管 (ET)",
+            flow: ["備物 (喉頭鏡/氣管內管/通條)", "預給氧 (Pre-oxygenation)", "直視聲帶插管", "確認位置 (聽診/EtCO2)", "固定並監測"],
+            key: [
+                "<strong>深度選擇 (距門齒)：</strong>男性通常固定在 21-23 cm，女性固定在 19-21 cm。兒童深度公式：(年齡/2) + 12 或 內徑 x 3。",
+                "<strong>位置確認三步驟：</strong>1. 聽診上腹部 (應無氣音) -> 2. 聽診兩側肺部 (應有對稱呼吸音) -> 3. 接上 EtCO2 監測 (應有波形與數值)。",
+                "<strong>操作限制：</strong>插管嘗試時間應小於 30 秒，CPR 中斷時間應小於 10 秒。若第一次插管失敗，應立即恢復 BVM 給氧，考慮使用 SGA 或再次嘗試 (最多 2 次)。"
+            ],
+            tp: {
+                action: "TP 專用技術",
+                desc: "適應症：OHCA、GCS=3 且 BVM 無法有效通氣、呼吸道灼傷水腫。禁忌：有喉頭反射、張口困難。",
+                detail: "插管後通氣速率：每 6 秒 1 口氣 (10次/分)，不需配合按壓。EtCO2 目標維持 35-45 mmHg。"
+            }
+        },
+        {
+            id: "Air-2", cat: "airway", title: "呼吸道二：聲門上呼吸道 (SGA/I-gel)",
+            flow: ["選擇尺寸 (依體重)", "潤滑背面", "置入至有阻力", "通氣測試"],
+            key: [
+                "<strong>適應症：</strong>OHCA 患者、GCS=3 且 BVM 通氣困難者、氣管內管插管失敗後的備案。",
+                "<strong>禁忌症：</strong>患者有嘔吐反射 (Gag reflex)、食道疾病、食道灼傷或意識清楚者。",
+                "<strong>尺寸選擇 (I-gel 為例)：</strong><br>3號 (黃色): 30-60 kg (小型成人)<br>4號 (綠色): 50-90 kg (中型成人)<br>5號 (橘色): > 90 kg (大型成人)",
+                "<strong>操作要點：</strong>置入後若有漏氣，可嘗試稍微調整深度或固定帶鬆緊。不需充氣 (I-gel 特性)。"
+            ],
+            tp: null
+        },
+        {
+            id: "Air-3", cat: "airway", title: "呼吸道三：呼吸道異物哽塞 (FBAO)",
+            flow: ["判斷嚴重度", "輕度 (可咳) -> 鼓勵咳嗽", "重度 (無聲/發紺) -> 哈姆立克法", "昏迷 -> CPR"],
+            key: [
+                "<strong>哈姆立克法：</strong>站於患者身後，雙手環抱腹部，一手握拳虎口向內置於肚臍上緣，另一手包住拳頭，向內向上用力推擠。",
+                "<strong>昏迷處置：</strong>若患者失去意識，立即讓其平躺並開始 CPR。每次壓胸 30 下後，<strong>先檢查口腔</strong>有無異物，有看到才用手指挖除，沒看到直接吹氣。",
+                "<strong>通氣受阻：</strong>若第一次吹氣受阻，重新暢通呼吸道 (提下巴/壓額) 再吹第二次。若仍受阻，繼續壓胸。"
+            ],
+            tp: {
+                action: "Magill Forceps 夾除",
+                desc: "TP 可使用喉頭鏡直視咽喉，若清楚看見異物，使用 Magill Forceps 將其夾出。注意操作時勿將異物推得更深。"
+            }
+        },
+        {
+            id: "Air-4", cat: "airway", title: "呼吸道四：嬰兒異物哽塞",
+            flow: ["確認意識與哭聲", "拍背壓胸法 (5下拍背 + 5下壓胸)", "檢查口腔", "昏迷 -> CPR"],
+            key: [
+                "<strong>適用對象：</strong>1 歲以下嬰兒。若還能發出聲音或哭泣，代表輕度阻塞，應密切觀察。",
+                "<strong>拍背壓胸法：</strong>將嬰兒面朝下趴在手臂上 (頭低腳高)，掌根於兩肩胛骨間拍擊 5 下。翻轉成面朝上，於兩乳頭連線下方按壓 5 下。",
+                "<strong>禁忌：</strong>切勿進行盲目手指挖取 (Blind Finger Sweep)，這可能會把異物推入更深處。",
+                "<strong>昏迷處置：</strong>若失去意識，立即開始 CPR (比例 30:2，雙指按壓)，每次吹氣前檢查口腔。"
+            ],
+            tp: null
+        },
+        {
+            id: "Air-5", cat: "airway", title: "呼吸道五：氣切病患呼吸困難",
+            flow: ["評估氣切管 (滑脫/阻塞/氣囊破裂)", "抽吸氣切口 (深度 <10cm)", "給氧 (氣切面罩/BVM)"],
+            key: [
+                "<strong>阻塞處置：</strong>先嘗試抽吸氣切口，若抽吸管無法放入或抽吸無效，考慮移除內管清洗後再裝回。",
+                "<strong>滑脫處置：</strong>勿盲目將脫出的氣切管推回，可能造成假道 (False passage)。應嘗試用無菌紗布覆蓋造口，改由口鼻使用 BVM 給氧 (需一人按壓封住造口)。",
+                "<strong>給氧路徑：</strong>優先接氣切處給氧。若氣切管有氣囊 (Cuff)，需確認氣囊已充氣才能有效通氣。若 SpO2 未改善則需考慮 BVM 輔助。"
+            ],
+            tp: {
+                action: "移除或更換氣切",
+                desc: "需線上醫囑授權。若患者 OHCA 或因完全阻塞危及生命，TP 可移除氣切管，改插氣管內管 (經口或經造口) 或使用 BVM 面罩通氣。"
+            }
+        },
+
+        // ====== 內科 (Medical) ======
+        {
+            id: "Med-1", cat: "medical", title: "非創傷一：OHCA (心跳停止)",
+            flow: ["確認無脈搏 (<10s)", "CPR (30:2)", "AED 分析", "建立進階呼吸道", "TP 給藥"],
+            key: [
+                "<strong>高品質 CPR：</strong>按壓速率 100-120 次/分，深度 5-6 公分，確保胸廓完全回彈，盡量減少中斷 (<10秒)。每 2 分鐘換手一次。",
+                "<strong>AED 操作：</strong>電擊後<strong>立即壓胸</strong>，不要先檢查脈搏，做完 2 分鐘循環後再評估心律。",
+                "<strong>通氣策略：</strong>插管或 SGA 置入後，CPR 改為連續按壓不中斷，通氣速率為每 6 秒 1 口氣 (10次/分)，避免過度通氣 (會降低腦部灌流)。"
+            ],
+            tp: {
+                action: "進階藥物處置",
+                drugs: [
+                    { name: "Epinephrine (1:1000)", dose: "1 mg IV/IO", ind: "OHCA (無脈搏)", warn: "每 4 分鐘 (每2個循環) 給予一次。推藥後給 20ml N/S 沖洗並抬高肢體 10-20 秒。無最大劑量限制。" },
+                    { name: "Amiodarone", dose: "首劑 300 mg / 次劑 150 mg", ind: "VF / 無脈性 VT (電擊無效)", warn: "推注速度要快。兩劑之間間隔約 3-5 分鐘。最大累積劑量 450 mg。" }
+                ]
+            }
+        },
+        {
+            id: "Med-2", cat: "medical", title: "非創傷二：呼吸困難 (氣喘/COPD)",
+            flow: ["給氧 (目標 SpO2)", "聽診 (哮鳴音?)", "協助使用 MDI", "TP 氣霧治療"],
+            key: [
+                "<strong>氧氣目標：</strong>一般患者 SpO2 目標 ≥ 94%。COPD 患者目標 88-92%，避免高濃度氧氣抑制呼吸驅動力。",
+                "<strong>鑑別診斷：</strong><br>1. 哮鳴音 (Wheezing) -> 氣喘、COPD、過敏。<br>2. 濕囉音 (Rales/Crackles) -> 肺炎、肺水腫。<br>3. 呼吸音減弱 -> 氣胸、肋膜積水。",
+                "<strong>處置：</strong>若懷疑氣喘/COPD 急性發作，協助患者使用自備的支氣管擴張劑 (MDI)。採坐姿或半坐臥以利呼吸。"
+            ],
+            tp: {
+                action: "氣霧治療 (Nebulizer)",
+                drugs: [
+                    { name: "Combivent", dose: "1 支 (2.5ml) + 6-8L O2", ind: "支氣管痙攣 / 哮鳴音", warn: "禁忌：對阿斯匹靈、大豆、花生過敏者。青光眼/攝護腺肥大慎用。單次最大劑量 1 支，可間隔重覆。" }
+                ]
+            }
+        },
+        {
+            id: "Med-3", cat: "medical", title: "非創傷三：意識不清 (低血糖)",
+            flow: ["測血糖", "排除中風/創傷/中毒", "血糖 < 60 mg/dl -> 處置", "評估意識改善"],
+            key: [
+                "<strong>處置原則：</strong>意識清醒者給予口服葡萄糖或含糖飲料。意識不清 (無法吞嚥) 者建立 IV 管路給予葡萄糖。",
+                "<strong>鑑別診斷 (AEIOU-TIPS)：</strong><br>A: Alcohol (酒精)<br>E: Epilepsy (癲癇)<br>I: Insulin (低血糖)<br>O: Overdose (藥物過量)<br>U: Uremia (尿毒)<br>T: Trauma (創傷)<br>I: Infection (感染)<br>P: Psychosis (精神)<br>S: Stroke (中風)",
+                "<strong>注意：</strong>若懷疑腦中風，除非測得低血糖，否則不建議常規給予葡萄糖水，以免加重腦水腫。"
+            ],
+            tp: {
+                action: "靜脈注射葡萄糖",
+                drugs: [
+                    { name: "D50W", dose: "2-4 amp (40-80ml) IV 推注", ind: "低血糖昏迷", warn: "必須先打 D5W 確認管路通暢，避免漏針造成組織壞死。小兒建議稀釋成 D10W 或 D25W 給予。" }
+                ]
+            }
+        },
+        {
+            id: "Med-4", cat: "medical", title: "非創傷四：抽搐 (Seizure)",
+            flow: ["保護病患 (移除危險物)", "側躺 (復甦姿勢)", "給氧 (NRM)", "測血糖"],
+            key: [
+                "<strong>現場保護：</strong>移除周圍尖銳物品，在頭部下方墊軟物，切勿強行壓制患者或塞東西入​​口中。",
+                "<strong>危急指標：</strong>大發作 (Grand mal) 通常數分鐘內停止，若 > 5分鐘或是連續發作意識未恢復，稱為「癲癇重積狀態 (Status Epilepticus)」，腦部恐缺氧受損，屬危急個案。",
+                "<strong>發作後 (Post-ictal)：</strong>患者會呈現意識混亂或嗜睡，需持續監測呼吸道與生命徵象，採側躺姿勢以防嘔吐吸入。"
+            ],
+            tp: {
+                action: "藥物治療",
+                desc: "若測得低血糖，依低血糖流程給予 D50W。若為癲癇重積狀態，部分縣市 TP 可依醫囑給予 Midazolam IM (需確認當地醫療指導規範)。"
+            }
+        },
+        {
+            id: "Med-5", cat: "medical", title: "非創傷五：致命性過敏 (Anaphylaxis)",
+            flow: ["移除過敏原", "給氧", "評估休克/呼吸道腫脹", "EMT-II 協助 Epipen", "TP 給藥"],
+            key: [
+                "<strong>致命徵兆：</strong>全身紅疹/蕁麻疹、呼吸喘鳴 (Stridor/Wheezing)、休克 (SBP<90)、血管性水腫 (嘴唇/眼皮腫脹)。",
+                "<strong>Epipen 協助：</strong>若患者自備 Epipen，EMT-II 可協助於大腿外側施打。施打後需停留 10 秒再拔出，並搓揉注射部位。",
+                "<strong>休克處置：</strong>若出現低血壓，應立即建立大管徑 IV 給予大量輸液，並採垂頭仰臥式 (Trendelenburg position)。"
+            ],
+            tp: {
+                action: "IM 給藥",
+                drugs: [
+                    { name: "Epinephrine (1:1000)", dose: "成人 0.3-0.5 mg / 小兒 0.01 mg/kg", ind: "過敏性休克 / 呼吸道水腫", warn: "給藥途徑：IM (肌肉注射) 於大腿前外側 (吸收最快)。最大單次劑量：成人 0.5mg / 小兒 0.3mg。每 5-15 分鐘可重複給予，直到症狀緩解。" }
+                ]
+            }
+        },
+        {
+            id: "Med-6", cat: "medical", title: "非創傷六：疑似腦中風 (CVA)",
+            flow: ["辛辛那提評估 (CPSS)", "G-FAST (大血管阻塞指標)", "測血糖 (排除低血糖)", "通報腦中風中心"],
+            key: [
+                "<strong>1. 辛辛那提中風指標 (CPSS)：</strong><br>Face (臉部): 露齒笑，觀察兩側嘴角是否對稱。<br>Arm (手臂): 雙眼閉合，雙手平舉手心向上 10 秒，觀察是否有單側下垂。<br>Speech (語言): 請病患說一句完整的句子，觀察是否含糊不清或無法理解。<br><strong>只要有 1 項異常，中風機率高達 72%。</strong>",
+                "<strong>2. G-FAST 評估 (偵測大血管阻塞 LVO)：</strong><br>除了上述 FAS 外，加做 <strong>Gaze (凝視)</strong> 與 <strong>Time (時間)</strong>。<br>Gaze: 觀察眼球是否無法跨過中線或持續偏向一側（凝視患側腦區）。若 G-FAST 陽性（FAS 任一項異常 + 凝視異常），高度懷疑大血管阻塞，這類患者需要進行「動脈內取栓術 (EVT)」，應優先送往具備此能力之醫院。",
+                "<strong>3. 黃金時間確認：</strong><br>務必詢問「最後一次看起來正常的時間 (Last Known Well)」。<br>靜脈血栓溶解劑 (IV-tPA): 黃金 4.5 小時內。<br>動脈取栓術 (EVT): 黃金 24 小時內。<br>若病患是在睡醒後發現異常，時間應從「睡前最後正常的時間」算起。",
+                "<strong>4. 關鍵處置與禁忌：</strong><br>- 嚴禁給予降血壓藥物：除非 SBP > 220 mmHg 或 DBP > 120 mmHg，否則腦中風初期的高血壓是為了維持腦灌流，不應降壓。<br>- 嚴禁給予葡萄糖水：除非測得低血糖 (<60 mg/dl)，否則高血糖會加重腦水腫與神經損傷。<br>- 姿勢：若無休克徵象，將床頭抬高 30 度，有助於降低顱內壓並減少吸入性肺炎風險。<br>- 通報：依據「就近適當」原則，並預先通報醫院啟動綠色通道。"
+            ],
+            tp: null
+        },
+        {
+            id: "Med-7", cat: "medical", title: "非創傷七：缺血性胸痛 (ACS)",
+            flow: ["OPQRST 病史評估", "12-lead ECG (目標10分鐘內)", "給藥篩選 (禁忌症確認)", "TP 給藥"],
+            key: [
+                "<strong>1. 典型與非典型症狀：</strong><br>典型：胸骨後悶痛、壓迫感 (如大石壓住)、輻射至左肩/下巴/背部、冒冷汗、呼吸困難。<br>非典型 (女性/老人/糖尿病)：可能僅表現為上腹痛、噁心嘔吐、虛弱無力或暈厥。這類患者需高度警覺。",
+                "<strong>2. 心電圖 (12-lead ECG)：</strong><br>目標在接觸患者 10 分鐘內完成。若發現 <strong>STEMI (ST段上升)</strong>，應立即通報並送往具 24 小時心導管能力之醫院，目標縮短 D2B (Door-to-Balloon) 時間。<br>若出現下壁梗塞 (II, III, aVF ST上升)，應加做右側導程 (V3R, V4R) 排除右心室梗塞。",
+                "<strong>3. 嚴格篩選給藥禁忌：</strong><br>給予 NTG 前務必確認三件事：<br>A. 血壓：SBP 必須 > 90 mmHg (若右心室梗塞則更需小心，因對前負荷極度敏感)。<br>B. 心跳：50 - 100 次/分。<br>C. 用藥史：確認 24 小時內有無服用威而鋼/樂威壯，或 48 小時內有無服用犀利士。若有服用，絕對禁止給予 NTG，否則會造成頑固性低血壓。"
+            ],
+            tp: {
+                action: "MONA 治療",
+                drugs: [
+                    { name: "Aspirin", dose: "300 mg (口服嚼碎)", ind: "疑似心肌梗塞胸痛", warn: "禁忌：對 Aspirin 過敏、近期胃腸道出血、疑似主動脈剝離 (撕裂痛/雙手脈搏不一)。" },
+                    { name: "NTG (舌下含片)", dose: "0.6 mg / 片", ind: "心因性胸痛且 BP > 90", warn: "絕對禁忌：1. SBP < 90 mmHg。 2. 心跳 < 50 或 > 100。 3. 近期服用壯陽藥。 4. 右心室梗塞。每 5 分鐘給一顆，最多 3 顆。給藥後需密切監測血壓。" }
+                ]
+            }
+        },
+        {
+            id: "Med-8", cat: "medical", title: "非創傷八：急性心衰竭 / 肺水腫",
+            flow: ["採端坐呼吸", "給氧 (NRM/CPAP)", "監測 ECG / BP", "限制輸液"],
+            key: [
+                "<strong>典型徵象：</strong>端坐呼吸 (無法平躺)、頸靜脈怒張 (JVD)、雙側肺部濕囉音 (Rales)、下肢水腫、粉紅色泡沫痰。",
+                "<strong>血壓評估：</strong>若血壓高 (>180) 多為急性肺水腫 (Flash Pulmonary Edema)；若血壓低 (<90) 則為心因性休克，預後較差。",
+                "<strong>處置原則：</strong>採高坐姿，給予高濃度氧氣，若有 CPAP 設備可優先使用。嚴格限制輸液 (KVO rate)，避免加重肺水腫。"
+            ],
+            tp: {
+                action: "進階處置",
+                drugs: [
+                    { name: "NTG (舌下)", dose: "0.6 mg", ind: "心衰竭且 BP > 90 (甚至 >140)", warn: "同胸痛禁忌症。利用血管擴張降低心臟前/後負荷，緩解肺水腫。" },
+                    { name: "TCP / 同步整流", dose: "視設定", ind: "不穩定心搏過緩 / 過速", warn: "需線上醫囑。若為症狀性緩脈可先給 Atropine 1mg。不穩定頻脈(如 VT/SVT 伴隨休克) 考慮同步整流。" }
+                ]
+            }
+        },
+        {
+            id: "Med-9", cat: "medical", title: "非創傷九：非創傷休克",
+            flow: ["平躺 / 抬腿", "給氧", "保暖", "建立 IV 給予輸液", "鑑別休克原因"],
+            key: [
+                "<strong>休克定義：</strong>SBP < 90 mmHg 加上灌流不足徵象 (蒼白、濕冷、CRT > 2秒、意識改變、尿量減少)。",
+                "<strong>輸液挑戰 (Fluid Challenge)：</strong>給予 N/S 250-500ml 後重新評估血壓及肺音。若肺部出現濕囉音應立即停止輸液。",
+                "<strong>鑑別診斷：</strong><br>1. 低血容：脫水、腸胃道出血 (黑便/吐血)。<br>2. 心因性：AMI、心衰竭 (頸靜脈怒張)。<br>3. 敗血性：發燒、感染源。<br>4. 過敏性：紅疹、接觸史。"
+            ],
+            tp: null
+        },
+
+        // ====== 創傷 (Trauma) ======
+        {
+            id: "Tra-1", cat: "trauma", title: "創傷一：創傷 OHCA",
+            flow: ["CPR + AED", "尋找可逆原因 (5H5T)", "大量輸液", "TP 進階處置"],
+            key: [
+                "<strong>創傷 OHCA 特性：</strong>存活率極低，重點在於快速解決可逆原因，而非長時間現場 CPR。若明顯死亡或無法矯正原因，可考慮不急救 (需醫囑)。",
+                "<strong>優先排除 (HOT)：</strong><br>H (Hypovolemia): 低血容 -> 大量輸液、止血。<br>O (Oxygenation): 缺氧 -> 建立呼吸道。<br>T (Tension Pneumothorax): 張力性氣胸 -> 針刺減壓。",
+                "<strong>骨盆固定：</strong>若懷疑骨盆骨折 (高能量機轉)，應儘早使用骨盆固定帶，以減少內出血空間。"
+            ],
+            tp: {
+                action: "進階復甦",
+                desc: "TP 應執行針刺減壓 (若懷疑氣胸)、建立骨內針 (IO) 快速輸液、給予 Epinephrine 1mg。插管可確保呼吸道並提供最佳氧合。"
+            }
+        },
+        {
+            id: "Tra-2", cat: "trauma", title: "創傷二：頭部外傷 (TBI)",
+            flow: ["C-spine 保護", "GCS 評估", "檢視 Cushing Triad", "避免二次傷害"],
+            key: [
+                "<strong>Cushing Triad (腦壓升高)：</strong>高血壓 (SBP上升)、心跳慢 (Bradycardia)、呼吸不規則 (Cheyne-Stokes)。",
+                "<strong>TBI 兩大殺手：</strong>低血氧 (SpO2 < 90%) 與 低血壓 (SBP < 90 mmHg) 會造成繼發性腦損傷，死亡率倍增。務必維持 SBP > 110 mmHg。",
+                "<strong>姿勢：</strong>若無休克徵象，床頭可抬高 30 度以利腦部靜脈回流，降低顱內壓 (ICP)。"
+            ],
+            tp: {
+                action: "氣道管理",
+                desc: "若 GCS < 9 且無法維持呼吸道，TP 應考慮插管保護呼吸道 (需注意可能有困難呼吸道或頸椎問題)。插管前可預給 Lidocaine (視當地規範) 以降低插管反應造成的 ICP 升高。"
+            }
+        },
+        {
+            id: "Tra-3", cat: "trauma", title: "創傷三：胸部外傷",
+            flow: ["暴露胸部", "檢視傷口 (氣胸/連枷胸)", "三面封/固定", "TP 針刺減壓"],
+            key: [
+                "<strong>開放性氣胸：</strong>吸氣時傷口有吸吮聲。使用不透氣敷料封住傷口三邊 (留一邊排氣)，防止空氣單向進入胸腔。",
+                "<strong>連枷胸 (Flail Chest)：</strong>兩根以上肋骨斷裂在兩處以上，造成奇異呼吸 (吸氣凹陷呼氣凸出)。以厚敷料或三角巾固定患處，給予高濃度氧氣。",
+                "<strong>張力性氣胸：</strong>嚴重呼吸窘迫、頸靜脈怒張、氣管偏移、單側呼吸音消失、休克。需立即減壓。"
+            ],
+            tp: {
+                action: "針刺減壓 (Needle Decompression)",
+                desc: "適應症：張力性氣胸 + 休克/瀕死。位置：患側第 2 肋間鎖骨中線 或 第 5 肋間腋前線。使用 14G/16G 長針，垂直進針，聽到洩氣聲即停止。"
+            }
+        },
+        {
+            id: "Tra-4", cat: "trauma", title: "創傷四：腹部外傷",
+            flow: ["檢視傷口", "臟器外露處置", "異物穿刺處置", "骨盆穩定度測試"],
+            key: [
+                "<strong>臟器外露：</strong>使用無菌濕紗布 (N/S) 覆蓋，再用乾紗布包紮並保暖，<strong>絕對不可將臟器推回腹腔</strong>，以免感染或壞死。",
+                "<strong>異物穿刺：</strong>固定異物，不可拔除 (拔除可能造成大出血)。使用甜甜圈型包紮固定。",
+                "<strong>骨盆骨折：</strong>若檢查發現骨盆不穩定 (壓痛/晃動)，應立即使用骨盆固定帶，並<strong>禁止再次按壓</strong>檢查，以免加重出血。採鏟式擔架搬運。"
+            ],
+            tp: null
+        },
+        {
+            id: "Tra-5", cat: "trauma", title: "創傷五：肢體外傷 & 斷肢",
+            flow: ["加壓止血", "止血帶 (若無效)", "骨折固定", "斷肢保存"],
+            key: [
+                "<strong>大出血 (X)：</strong>直接加壓無效或動脈噴射出血，應立即使用戰術止血帶 (CAT)。位置：傷口近心端 5-8cm 或肢體根部 (若傷口不明)。需轉緊至動脈搏動消失。",
+                "<strong>斷肢處置：</strong>斷肢用濕紗布包裹 -> 放入塑膠袋密封 -> 再放入冰水袋中 (隔水冰浴)。<strong>切勿直接接觸冰塊</strong>以免凍傷組織，影響再接合成功率。",
+                "<strong>骨折固定：</strong>固定範圍需包含上下關節。固定前後皆需評估 PMS (脈搏/運動/感覺)。"
+            ],
+            tp: null
+        },
+        {
+            id: "Tra-6", cat: "trauma", title: "創傷六：出血性休克",
+            flow: ["積極止血", "給氧", "保暖", "IV 大量輸液", "TP 給藥"],
+            key: [
+                "<strong>允許性低血壓 (Permissive Hypotension)：</strong>若無合併腦傷，SBP 維持 80-90 mmHg (或摸得到橈動脈) 即可，避免打太多水沖掉血塊或稀釋凝血因子。",
+                "<strong>合併腦傷：</strong>若合併 TBI，SBP 需維持 > 110 mmHg 以確保腦灌流。",
+                "<strong>保暖：</strong>低體溫是創傷死亡三角 (低體溫、酸中毒、凝血異常) 之一，務必徹底保暖，輸液若能加溫更佳。"
+            ],
+            tp: {
+                action: "Tranexamic Acid (TXA)",
+                drugs: [
+                    { name: "TXA", dose: "1 g (加入 100ml N/S)", ind: "嚴重出血性休克 (傷後3小時內)", warn: "需線上醫囑。滴注時間 > 10 分鐘 (打太快會造成低血壓)。" }
+                ]
+            }
+        },
+        {
+            id: "Tra-7", cat: "trauma", title: "創傷七：張力性氣胸",
+            flow: ["高濃度氧氣", "BVM 輔助 (小心惡化)", "準備針刺減壓"],
+            key: [
+                "<strong>病理機轉：</strong>胸腔內空氣堆積造成正壓，壓迫肺部並使縱膈腔偏移，導致靜脈回流受阻，產生阻塞性休克。",
+                "<strong>徵兆：</strong>嚴重呼吸窘迫、休克 (低血壓)、頸靜脈怒張 (JVD)、單側呼吸音消失、氣管偏向健側 (晚期徵兆)。",
+                "<strong>BVM 注意：</strong>使用 BVM 正壓通氣可能會加速空氣堆積，加重病情。若 BVM 推不動或推了之後血壓急降，應強烈懷疑並準備減壓。"
+            ],
+            tp: {
+                action: "針刺減壓",
+                desc: "立即執行。若減壓後氣體排出且生命徵象改善，則處置成功。若無改善需考慮其他原因 (如心包膜填塞)。"
+            }
+        },
+
+        // ====== 特殊 (Special) ======
+        {
+            id: "Sp-1", cat: "special", title: "特殊一：火場救出",
+            flow: ["搬離熱區", "高濃度氧 (NRM 15L)", "評估嗆傷/CO中毒", "TP 預防性插管"],
+            key: [
+                "<strong>一氧化碳 (CO) 中毒：</strong>SpO2 數值可能呈現假性正常 (因 COHb 顏色似 O2Hb，且脈衝式血氧機無法區分)。無論數值如何，一律給予高濃度氧氣。",
+                "<strong>呼吸道灼傷：</strong>若有口鼻碳粒、鼻毛燒焦、聲音沙啞、吞嚥困難、呼吸喘鳴，強烈懷疑呼吸道灼傷。呼吸道水腫可能在數小時內惡化。",
+                "<strong>處置：</strong>若意識不清或呼吸衰竭，應儘早插管保護呼吸道。若無法插管，儘速送醫。"
+            ],
+            tp: {
+                action: "預防性插管",
+                desc: "呼吸道水腫惡化速度快，若發現喘鳴或意識不清，應在氣道完全腫死前插管 (可選用較小號管徑)。"
+            }
+        },
+        {
+            id: "Sp-2", cat: "special", title: "特殊二：灼燙傷",
+            flow: ["沖脫泡蓋送 (沖水降溫)", "評估面積 (9法則)", "保暖", "IV 輸液"],
+            key: [
+                "<strong>沖水降溫：</strong>以流動清水沖洗至少 15-30 分鐘，可帶走熱能並止痛。若已沖過或大面積燒傷，避免沖太久導致失溫。",
+                "<strong>移除飾品：</strong>務必移除患處飾品 (戒指、手錶、手環)，避免組織腫脹後卡死造成遠端壞死。",
+                "<strong>輸液補充：</strong>大面積燒傷 (>15% TBSA) 易發生體液流失休克，需建立 IV 給予輸液 (Parkland 公式參考：4ml x kg x %TBSA / 24h，前半量於前8小時給予，院前可先給予適量 N/S)。"
+            ],
+            tp: null
+        },
+        {
+            id: "Sp-3", cat: "special", title: "特殊三：溺水",
+            flow: ["C-spine (若懷疑創傷)", "清除口中異物", "人工呼吸/CPR", "保暖"],
+            key: [
+                "<strong>急救順序：</strong>溺水 CPR 順序為 A-B-C (先給氣再壓胸)，因為主要原因是缺氧導致心跳停止。若只有脈搏無呼吸，僅做人工呼吸。",
+                "<strong>脊椎保護：</strong>除非有明顯創傷機轉 (如跳水、滑水、有外傷痕跡)，否則不需常規使用長背板，以免延誤急救。",
+                "<strong>併發症：</strong>注意是否併發肺水腫 (聽診濕囉音)，給予高濃度氧氣。注意保暖預防低體溫。"
+            ],
+            tp: null
+        },
+        {
+            id: "Sp-4", cat: "special", title: "特殊四：中毒 (有機磷)",
+            flow: ["自我防護 (PPE)", "除汙", "辨識 SLUDGE 症狀", "TP 給解毒劑"],
+            key: [
+                "<strong>SLUDGE 症狀 (副交感神經興奮)：</strong><br>S: Salivation (流口水)<br>L: Lacrimation (流淚)<br>U: Urination (失禁)<br>D: Diarrhea (腹瀉)<br>G: GI upset (絞痛)<br>E: Emesis (嘔吐)",
+                "<strong>其他徵象：</strong>瞳孔針狀 (Miosis)、心跳慢 (Bradycardia)、肺部濕囉音 (Bronchorrhea)。",
+                "<strong>自我防護：</strong>有機磷可經皮膚吸收，接觸患者務必穿戴隔離衣與手套，避免二次中毒。"
+            ],
+            tp: {
+                action: "解毒劑",
+                drugs: [
+                    { name: "Atropine", dose: "1-2 mg IV", ind: "有機磷中毒伴隨嚴重症狀 (心搏過緩、支氣管分泌物過多)", warn: "每 3-5 分鐘重複給予，直到口水減少、肺部囉音消失 (Atropinization)。最大劑量無上限，依症狀緩解而定。" }
+                ]
+            }
+        },
+        {
+            id: "Sp-5", cat: "special", title: "特殊五：急產接生",
+            flow: ["判斷產兆 (頻率/便意感)", "檢查胎頭外露 (Crowning)", "無菌準備與接生", "斷臍與新生兒護理"],
+            key: [
+                "<strong>1. 急產判斷標準：</strong><br>- 懷孕週數 > 24 週。<br>- 陣痛頻率密集：間隔 < 2-3 分鐘，持續 45-60 秒。<br>- 產婦主訴：有強烈便意感（胎頭壓迫直腸）、不由自主想用力。<br>- 視診：會陰部膨出，甚至已看到胎頭 (Crowning)。此時應立即準備現場接生，切勿要求產婦夾腿或強行送醫。",
+                "<strong>2. 接生五步驟：</strong><br>A. 保護會陰：一手持紗布保護會陰部，避免撕裂傷。<br>B. 托住胎頭：另一手輕托胎頭，控制產出速度，避免噴射式產出。<br>C. 檢查臍帶：胎頭產出後，立即檢查頸部有無臍帶繞頸。若有，嘗試輕輕拉鬆繞過頭部；若太緊無法解開，需兩處夾住後剪斷。<br>D. 娩出肩膀：胎頭轉向後，輕壓胎頭協助上方肩膀娩出，再輕抬協助下方肩膀娩出。<br>E. 擦乾保暖：胎兒全身滑溜，需小心抓握。立即擦乾羊水並給予保暖。",
+                "<strong>3. 斷臍與後送：</strong><br>待臍帶搏動停止（約 1-3 分鐘）後斷臍。使用兩個臍帶夾，夾在距離肚臍 5-10 公分處，於兩夾之間剪斷。將胎兒擦乾後置於母親胸前（肌膚接觸）保暖並後送。注意胎盤可能會在運送途中產出，需一併帶至醫院。"
+            ],
+            tp: null
+        },
+        {
+            id: "Sp-6", cat: "special", title: "特殊六：孕婦急救",
+            flow: ["左側躺", "給氧", "監測生命徵象", "OHCA 處置"],
+            key: [
+                "<strong>姿勢：</strong>懷孕 > 20週，增大的子宮會壓迫下腔靜脈導致回心血流減少 (仰臥低血壓症候群)，應採<strong>左側躺</strong>姿勢後送。",
+                "<strong>孕婦 OHCA：</strong>CPR 時需有人徒手將子宮推向左側 (LUD)，按壓位置需比一般人高 (偏胸骨中上，因橫膈膜上抬)。",
+                "<strong>電擊/給藥：</strong>劑量與一般成人相同，不需調整。重點是救媽媽才能救寶寶。"
+            ],
+            tp: null
+        },
+        {
+            id: "Sp-7", cat: "special", title: "特殊七：新生兒急救 (NRP)",
+            flow: ["快速評估 (足月? 羊水? 呼吸? 肌張力?)", "保暖/擺位/抽吸/刺激", "正壓通氣 (PPV)", "胸外按壓"],
+            key: [
+                "<strong>1. 黃金一分鐘 (The Golden Minute)：</strong><br>出生後 60 秒內必須完成初步評估與開始必要的通氣輔助。大多數新生兒只需要保暖、擦乾與刺激。",
+                "<strong>2. 處置流程：</strong><br>- <strong>Step 1 保暖刺激：</strong>置於輻射加溫台或母親胸前，擦乾身體，移除濕布，摩擦背部或輕彈腳底。<br>- <strong>Step 2 氣道處理：</strong>若有明顯阻塞或需正壓通氣，採「嗅吸姿勢 (Sniffing position)」，先吸口、後吸鼻。<br>- <strong>Step 3 判斷心跳與呼吸：</strong><br>  * <strong>心跳 < 100 或呼吸暫停/喘息：</strong>立即給予正壓通氣 (PPV)。使用 BVM，速率 40-60 次/分，口訣「吸-二-三」。注意胸廓是否有起伏。<br>  * <strong>心跳 < 60：</strong>在有效的正壓通氣 30 秒後，若心跳仍 < 60，開始胸外按壓。<br>  * <strong>CPR 比例：</strong>3:1 (90 下按壓 + 30 下通氣/分)。",
+                "<strong>3. 重點提示：</strong><br>- SpO2 導程應接在<strong>右手</strong> (導管前)。<br>- 出生 1 分鐘 SpO2 60-65% 是正常的，10 分鐘才達 85-95%，勿過度給氧。<br>- 若正壓通氣無效 (胸廓無起伏)，執行 <strong>MR. SOPA</strong> 矯正：調整面罩 (Mask)、重新擺位 (Reposition)、抽吸 (Suction)、打開嘴巴 (Open)、增加壓力 (Pressure)、考慮插管 (Airway)。"
+            ],
+            tp: null
+        },
+        {
+            id: "Sp-8", cat: "special", title: "特殊八：小兒通用評估",
+            flow: ["PAT 三角評估 (不接觸)", "初級評估 (ABCDE)", "次級評估 (詳細病史)", "危急度判斷"],
+            key: [
+                "<strong>1. 小兒評估三角 (PAT)：</strong><br>在接觸病患前的「第一眼」印象，數秒內完成。<br>- <strong>外觀 (Appearance):</strong> 肌張力 (Tone)、互動性 (Interactiveness)、安撫性 (Consolability)、眼神 (Look/Gaze)、異常哭聲 (Speech/Cry)。口訣：TICLS。<br>- <strong>呼吸 (Work of Breathing):</strong> 鼻翼煽動、胸凹 (Retractions)、異常呼吸音 (哮喘/喘鳴)、點頭式呼吸。<br>- <strong>循環 (Circulation):</strong> 膚色蒼白、發紺、大理石斑 (Mottling)。<br><strong>判斷：</strong>任一邊異常 = 不穩定；三邊異常 = 瀕死狀態 (Cardiopulmonary Failure)。",
+                "<strong>2. 兒童低血壓定義 (SBP 下限)：</strong><br>- 新生兒 (0-28天): < 60 mmHg<br>- 嬰兒 (1-12月): < 70 mmHg<br>- 兒童 (1-10歲): < 70 + (2 x 年齡) mmHg<br>- > 10歲: < 90 mmHg<br>注意：兒童代償能力強，血壓下降通常是休克晚期徵兆，應提早觀察心跳加快與灌流變差。",
+                "<strong>3. 脫水評估：</strong><br>前囟門凹陷、哭沒有眼淚、口腔黏膜乾燥、皮膚張力變差、尿布更換次數減少。脫水是兒童休克常見原因。"
+            ],
+            tp: null
+        },
+        {
+            id: "Sp-9", cat: "special", title: "特殊九：精神/行為急症",
+            flow: ["安全第一", "警消配合", "除暴安良 (言語安撫)", "物理約束"],
+            key: [
+                "<strong>現場安全：</strong>評估是否有武器或暴力傾向，若無法控制應撤退並等待員警到場。",
+                "<strong>排除生理因素：</strong>低血糖、缺氧、頭部外傷、中風、藥物中毒都可能造成精神異常 (Delirium)，需先排除這些可逆原因。",
+                "<strong>約束原則：</strong>若需約束，需足夠人力 (5人法)。注意勿影響呼吸 (避免長時間趴姿壓迫胸部，防範姿勢性窒息)。"
+            ],
+            tp: null
+        },
+        {
+            id: "Sp-10", cat: "special", title: "特殊十：大量傷患 (MCI)",
+            flow: ["檢傷分類 (START)", "分區 (紅黃綠黑)", "指揮站/後送官", "後送"],
+            key: [
+                "<strong>START 檢傷法 (30秒/人)：</strong><br>1. 可行走? -> 綠 (Green)<br>2. 呼吸? (無->黑 Black, >30->紅 Red)<br>3. 脈搏/CRT? (無/長->紅 Red)<br>4. 聽令動作? (否->紅 Red, 是->黃 Yellow)",
+                "<strong>後送原則：</strong>優先後送紅色傷患。適當分配輕重傷患至不同醫院，避免單一醫院癱瘓。"
+            ],
+            tp: null
+        },
+        {
+            id: "Sp-11", cat: "special", title: "特殊十一：復甦後照護 (ROSC)",
+            flow: ["12-lead ECG", "呼吸照護", "循環照護", "體溫管理"],
+            key: [
+                "<strong>呼吸照護：</strong>維持 SpO2 92-98%，EtCO2 35-45 mmHg。避免過度通氣，以免腦血管收縮導致腦缺血。",
+                "<strong>循環照護：</strong>維持 SBP > 90 mmHg，必要時給予輸液挑戰或升壓劑。",
+                "<strong>心電圖：</strong>若 12-lead ECG 顯示 STEMI，需通報送往導管醫院。",
+                "<strong>體溫管理 (TTM)：</strong>若患者意識不清，可考慮開始目標體溫管理 (視縣市規範)，避免發燒。"
+            ],
+            tp: null
+        },
+        {
+            id: "Sp-12", cat: "special", title: "特殊十二：不施行 CPR (DNR)",
+            flow: ["確認 DNR 文件", "核對身分", "確認明顯死亡徵象", "家屬意願"],
+            key: [
+                "<strong>明顯死亡徵象：</strong>屍僵、屍斑、斷頭、內臟外溢、軀幹斷裂、焦黑。符合其一可不急救。",
+                "<strong>DNR 文件：</strong>需為正本或註記於健保卡。核對姓名與身分證字號。",
+                "<strong>爭議處理：</strong>若現場家屬對急救有爭議，或文件不全，仍以執行急救、送醫為原則，避免後續法律糾紛。"
+            ],
+            tp: null
+        },
+        {
+            id: "Sp-13", cat: "special", title: "特殊十三：現場死亡",
+            flow: ["確認無生命徵象", "通知員警", "保留現場", "安撫家屬"],
+            key: [
+                "<strong>保留現場：</strong>除非有後續危險 (如火災、坍塌)，否則不應移動遺體。",
+                "<strong>刑案懷疑：</strong>若為非自然死亡 (自殺、他殺、意外)，務必保留現場完整性，避免破壞跡證，並交由警方處理。",
+                "<strong>家屬溝通：</strong>給予家屬適當的心理支持，說明後續流程 (警方採證、相驗)。"
+            ],
+            tp: null
+        },
+        {
+            id: "Sp-14", cat: "special", title: "特殊十四：拒絕送醫",
+            flow: ["評估意識能力", "告知病情風險", "勸導送醫", "簽署拒送書"],
+            key: [
+                "<strong>能力評估：</strong>必須確認患者意識清楚 (GCS 15)、無酒精/藥物影響、且有決策能力。",
+                "<strong>風險告知：</strong>明確告知「不送醫可能導致的嚴重後果（如死亡、殘疾、病情惡化）」，確保醫療資訊連續性。",
+                "<strong>證據保全：</strong>全程錄音錄影存證，並請家屬或員警見證簽名。若患者拒簽，可由員警或救護人員註記。"
+            ],
+            tp: null
+        },
+        {
+            id: "Sp-15", cat: "special", title: "特殊十五：野外/長途救護 (復興區專屬攻略)",
+            content: `
+                <div class="sec-header">🌲 復興區野外/長途救護專章</div>
+                <p>針對桃園復興區及偏遠山區地形特性，建立野外長途運輸之專屬評估與處置標準。本區塊內容經大幅擴充，點擊各項目可展開查看詳細判斷原則。</p>
+
+                <details class="sp-detail">
+                    <summary><span class="tag-block tag-red">環境</span> 1. 冷熱急症：熱衰竭 vs 中暑</summary>
+                    <div class="sp-content">
+                        <strong>🔥 熱急症 (Heat Illness)</strong><br>
+                        核心區辨重點在於<strong>意識狀態 (CNS Status)</strong>。<br>
+                        <ul>
+                            <li><strong>熱衰竭 (Heat Exhaustion)：</strong> 體溫可能升高但 <40°C，皮膚濕冷，意識清楚或僅輕微暈眩。處置：移至陰涼處，補充電解質水份。</li>
+                            <li><strong>熱中暑 (Heat Stroke)：</strong> <span style="color:#fca5a5;">危急！</span>體溫 >40°C，且伴隨<strong>中樞神經異常</strong> (意識不清、譫妄、癲癇、昏迷)。皮膚可能乾熱 (傳統型) 或大汗 (勞動型)。</li>
+                        </ul>
+                        <strong>野外處置：</strong><br>
+                        1. <strong>立即降溫 (Cool First)：</strong> 在野外若無法立即後送，應先積極降溫。使用<strong>蒸發法</strong>（脫衣、噴水霧、搧風）最有效且不需大量冰塊。<br>
+                        2. <strong>輸液：</strong> 建立 IV 給予 N/S。避免給予退燒藥 (Antipyretics)，無效且傷肝。<br>
+                        <hr style="border:0; border-top:1px dashed #555; margin:10px 0;">
+                        <strong>❄️ 冷急症 (Hypothermia)</strong><br>
+                        <strong>救援崩潰 (Rescue Collapse) & 餘溫效應 (Afterdrop)：</strong><br>
+                        搬運失溫病患嚴禁「直立」或「粗魯晃動」。冰冷的周邊血液若突然回流至核心，會導致核心溫度進一步下降並誘發致死性心律不整 (VF)。<br>
+                        <strong>處置：</strong><br>
+                        - 移除濕衣物，使用防風層。<br>
+                        - 被動回溫（加蓋毛毯、暖暖包置於腋下/鼠蹊），<strong>禁止按摩四肢</strong>。
+                    </div>
+                </details>
+
+                <details class="sp-detail">
+                    <summary><span class="tag-block tag-p">生物</span> 2. 蜂螫與蛇咬處置原則</summary>
+                    <div class="sp-content">
+                        <strong>🐍 毒蛇咬傷 (Snake Bites)</strong><br>
+                        台灣六大毒蛇主要分為出血性 (龜殼花、赤尾青竹絲、百步蛇) 與神經性 (雨傘節、眼鏡蛇)。<br>
+                        <strong>野外處置 Do's & Don'ts：</strong><br>
+                        <ul>
+                            <li><strong>❌ 禁止：</strong> 切開傷口、口對口吸毒、冰敷 (加重組織壞死)、飲酒、使用止血帶 (Tourniquet)。</li>
+                            <li><strong>✅ 正確做法：</strong>
+                                <ol>
+                                    <li><strong>認蛇：</strong> 保持冷靜，拍照或記下特徵。</li>
+                                    <li><strong>除束縛：</strong> 迅速脫除戒指、手錶、手環，因患肢可能在數分鐘內腫脹卡死。</li>
+                                    <li><strong>擺位：</strong> 患肢保持略低於心臟高度。</li>
+                                    <li><strong>彈性繃帶：</strong> 僅建議用於<strong>神經性</strong>毒蛇咬傷（減緩淋巴回流），出血性毒蛇則以寬鬆包紮為主。若無法分辨，則採寬鬆包紮。</li>
+                                </ol>
+                            </li>
+                        </ul>
+                        <hr style="border:0; border-top:1px dashed #555; margin:10px 0;">
+                        <strong>🐝 蜂螫 (Bee Stings)</strong><br>
+                        重點在於偵測<strong>過敏性休克 (Anaphylaxis)</strong>。<br>
+                        - <strong>移除螫針：</strong> 使用信用卡或鈍片刮除，避免擠壓毒囊。<br>
+                        - <strong>休克徵兆：</strong> 呼吸喘鳴、全身蕁麻疹、血壓下降。<br>
+                        - <strong>救命藥物：</strong> EMT-P 或 EMT-II (醫囑下) 儘早給予 Epinephrine IM (成人 0.3mg)。
+                    </div>
+                </details>
+
+                <details class="sp-detail">
+                    <summary><span class="tag-block tag-blue">腦傷</span> 3. TBI 與 IICP 野外判斷 (H-Bombs)</summary>
+                    <div class="sp-content">
+                        在長途運送中，必須嚴格監控顱內壓 (ICP) 升高的徵兆，並避免二次腦損傷。<br><br>
+                        <strong>⚠️ 關鍵判斷：Cushing's Triad (庫興氏徵候群)</strong><br>
+                        若出現以下三徵兆，代表腦幹受壓迫，瀕臨腦疝脫：<br>
+                        1. <strong>高血壓 (Hypertension)</strong> 且脈壓差變大。<br>
+                        2. <strong>心搏過慢 (Bradycardia)</strong>。<br>
+                        3. <strong>呼吸不規則 (Irregular Respiration)</strong>。<br><br>
+                        <strong>💣 避免 H-Bombs (二次腦傷殺手)</strong><br>
+                        受傷的大腦極度脆弱，對於缺氧與低血壓的耐受度極低。<br>
+                        1. <strong>Hypoxia (缺氧)：</strong> 絕對維持 SpO2 > 90% (理想 >94%)。若呼吸抑制，提早插管或使用 BVM。<br>
+                        2. <strong>Hypotension (低血壓)：</strong> 腦灌流壓 (CPP) = MAP - ICP。若血壓低，腦部將無法獲得血流。<strong>目標：SBP > 110 mmHg</strong>。<br>
+                        3. <strong>Head Up：</strong> 若無休克且排除脊椎休克，將床頭抬高 30 度，利用重力幫助顱內靜脈回流，降低 ICP。
+                    </div>
+                </details>
+
+                <details class="sp-detail">
+                    <summary><span class="tag-block tag-green">脊椎</span> 4. 頸脊椎傷害與長途運輸</summary>
+                    <div class="sp-content">
+                        <strong>限制性脊椎保護 (SMR) 新觀念：</strong><br>
+                        復興區至市區車程常超過 1 小時，傳統全脊椎固定 (長背板+頸圈) 會導致壓瘡、疼痛躁動，甚至影響呼吸。<br><br>
+                        <strong>✅ 建議做法：</strong><br>
+                        1. <strong>脫困：</strong> 使用長背板或鏟式擔架 (Scoop) 進行脫困與搬運。<br>
+                        2. <strong>轉運：</strong> 一旦上救護車，應盡速將患者移至<strong>真空氣墊床 (Vacuum Mattress)</strong>。<br>
+                        3. <strong>優勢：</strong> 真空氣墊床能順應身體曲線塑形，提供更佳的固定效果，且大幅提升舒適度，減少患者因疼痛掙扎而造成的二次傷害。<br><br>
+                        <strong>神經學檢查 (PMS)：</strong><br>
+                        每次移動病患前後，務必檢查四肢的 P (Pulse 脈搏)、M (Motor 運動)、S (Sensation 感覺)。
+                    </div>
+                </details>
+
+                <div style="margin-top:15px; font-size:0.9rem; color:#aaa;">
+                    <strong>其他野外重點：</strong><br>
+                    - <strong>暈車管理：</strong> 採半坐臥，視線固定前方，備妥嘔吐袋。<br>
+                    - <strong>止血帶：</strong> 野外長途運送若超過 2 小時，除非有醫囑，否則不建議自行鬆開止血帶，以免發生再灌流傷害或大出血。
+                </div>
+            `,
+            tp: null
+        },
+        {
+            id: "Sp-16", cat: "special", title: "特殊十六：高威脅環境",
+            flow: ["熱區 (掩蔽/止血)", "暖區 (快速處置)", "冷區 (完整評估)"],
+            key: [
+                "<strong>TECC (戰術緊急傷患照護) 原則：</strong>",
+                "<strong>熱區 (Direct Threat)：</strong>仍在火力/威脅下。僅做止血帶止血，盡快撤離至掩體。",
+                "<strong>暖區 (Indirect Threat)：</strong>暫時安全。快速評估 ABC，建立呼吸道，處理氣胸。",
+                "<strong>冷區 (Evacuation)：</strong>完全安全。執行完整評估與處置，準備後送。"
+            ],
+            tp: null
+        },
+
+        // ====== 離線功能 (Offline Tutorial) ======
+        {
+            id: "TUT-1", cat: "tutorial", title: "🤖 Android 安卓離線使用教學",
+            content: `
+                <div class="tut-step"><strong>步驟 1：下載檔案</strong><br>將此 HTML 檔案傳送到手機（透過 LINE Keep 或 Email），並選擇「下載」或「儲存」。</div>
+                <div class="tut-step"><strong>步驟 2：開啟檔案</strong><br>打開手機的「檔案 (Files)」App 或「我的檔案」，進入「下載 (Downloads)」資料夾找到該檔案。點擊檔案，系統會問你要用什麼開啟，請選擇 <strong>Chrome</strong>。</div>
+                <div class="tut-step"><strong>步驟 3：加到主畫面 (像 App 一樣)</strong><br>1. 用 Chrome 打開檔案後。<br>2. 點擊右上角「...」選單。<br>3. 點擊「加星號 (☆)」加入書籤，方便下次快速從 Chrome 書籤列開啟。</div>
+                <div class="tut-step"><strong>💡 小撇步</strong><br>建議將此檔案設為 Chrome 首頁或常駐分頁，執勤時解鎖手機即可立即搜尋。</div>
+            `, tp: null
+        },
+        {
+            id: "TUT-2", cat: "tutorial", title: "🍎 iOS iPhone 離線使用教學",
+            content: `
+                <div class="tut-step"><strong>步驟 1：儲存檔案</strong><br>在 LINE 或 Email 中點開檔案，點擊角落的「分享按鈕」(方塊箭頭)，向下滑動選單，點擊<strong>「儲存到檔案 (Save to Files)」</strong>，選擇「我的 iPhone (On My iPhone)」，按右上角儲存。</div>
+                <div class="tut-step"><strong>步驟 2：開啟使用</strong><br>回到主畫面，找到並打開灰色的<strong>「檔案 (Files)」</strong> App (iPhone 內建)。點擊「瀏覽」->「我的 iPhone」，找到剛剛存的檔案 (index.html)，點擊即可直接開啟。</div>
+                <div class="tut-step"><strong>💡 小撇步</strong><br>iPhone 會直接用內建預覽器打開，介面與 App 無異。建議執勤期間保持此分頁開啟，解鎖手機即可立即搜尋。</div>
+            `, tp: null
+        }
+    ];
+
+    // --- Application Logic ---
+    let pMode = false;
+    const contentArea = document.getElementById('contentArea');
+    const searchInput = document.getElementById('searchInput');
+    const fabBtn = document.getElementById('fabBtn');
+
+    function renderCards(filter = 'all', search = '') {
+        contentArea.innerHTML = '';
+        
+        const filtered = protocols.filter(item => {
+            const matchesCat = filter === 'all' ? true : item.cat === filter;
+            const matchesSearch = 
+                item.title.toLowerCase().includes(search.toLowerCase()) || 
+                (item.key && item.key.some(k => k.toLowerCase().includes(search.toLowerCase()))) ||
+                (item.content && item.content.toLowerCase().includes(search.toLowerCase())) ||
+                (item.tp && item.tp.drugs && item.tp.drugs.some(d => d.name.toLowerCase().includes(search.toLowerCase())));
+            
+            const matchesP = pMode ? (item.tp !== null) : true;
+            
+            return matchesCat && matchesSearch && matchesP;
+        });
+
+        if (filtered.length === 0) {
+            contentArea.innerHTML = `<div style="text-align:center;color:#666;margin-top:60px;">
+                <div style="font-size:3rem;margin-bottom:10px;">🤔</div>
+                沒有找到相關流程
+            </div>`;
+            return;
+        }
+
+        let html = '';
+        filtered.forEach(item => {
+            const isPHighlight = item.tp ? 'p-highlight' : '';
+            const isTutHighlight = item.cat === 'tutorial' ? 'tut-highlight' : '';
+            
+            // --- Build Flowchart ---
+            let flowHtml = '';
+            if (item.flow && !pMode) { 
+                flowHtml = '<div class="flow-container">';
+                item.flow.forEach((step) => {
+                    flowHtml += `<div class="flow-step">${step}</div>`;
+                });
+                flowHtml += '</div>';
+            }
+
+            // --- Build Key Points / Content ---
+            // Updated logic to support item.content for any card type
+            let bodyHtml = '';
+            if (item.content) {
+                bodyHtml = item.content; 
+            } else if (!pMode && item.key) {
+                bodyHtml += '<div class="sec-header">⚡ 關鍵評估與處置</div><ul>';
+                item.key.forEach(k => { bodyHtml += `<li><span class="long-text">${k}</span></li>`; });
+                bodyHtml += '</ul>';
+            }
+
+            // --- Build TP Section ---
+            let tpHtml = '';
+            if (item.tp) {
+                tpHtml += `<div class="drug-box">
+                    <div class="drug-title"><span class="tp-badge">TP</span> ${item.tp.action || "高級救護處置"}</div>
+                    ${item.tp.desc ? `<p>${item.tp.desc}</p>` : ''}
+                `;
+                
+                if (item.tp.drugs) {
+                    item.tp.drugs.forEach(d => {
+                        tpHtml += `
+                            <div class="drug-card">
+                                <div style="font-weight:bold;color:#fff;margin-bottom:8px;font-size:1rem;">💊 ${d.name}</div>
+                                <div class="info-row"><div class="info-label">劑量</div><div class="info-val">${d.dose}</div></div>
+                                <div class="info-row"><div class="info-label">適應症</div><div class="info-val success">${d.ind}</div></div>
+                                <div class="info-row"><div class="info-label">警示</div><div class="info-val danger">${d.warn}</div></div>
+                            </div>
+                        `;
+                    });
+                }
+                
+                if (item.tp.detail) {
+                    tpHtml += `<div style="font-size:0.85rem;color:#9ca3af;margin-top:8px;border-top:1px solid rgba(255,255,255,0.1);padding-top:4px;">ℹ️ ${item.tp.detail}</div>`;
+                }
+                tpHtml += `</div>`;
+            }
+
+            // Expand tutorial cards by default
+            const expandedClass = pMode || item.cat === 'tutorial' ? 'expanded' : '';
+
+            html += `
+                <div class="card ${isPHighlight} ${isTutHighlight} ${expandedClass}" onclick="toggleCard(this)">
+                    <div class="card-header">
+                        <div>
+                            ${item.id ? `<span class="card-id">${item.id}</span>` : ''}
+                            <span class="card-title">${item.title}</span>
+                        </div>
+                        <div class="expand-icon">▼</div>
+                    </div>
+                    <div class="card-body">
+                        ${!pMode && item.cat !== 'tutorial' && !item.content ? '<div class="sec-header">📋 標準流程</div>' : ''}
+                        ${flowHtml}
+                        ${bodyHtml}
+                        ${tpHtml}
+                    </div>
+                </div>
+            `;
+        });
+
+        contentArea.innerHTML = html;
+    }
+
+    function toggleCard(el) {
+        el.classList.toggle('expanded');
+    }
+
+    function filterCat(cat) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        const targetBtn = document.querySelector(`.tab-btn[onclick="filterCat('${cat}')"]`);
+        if(targetBtn) targetBtn.classList.add('active');
+        
+        if (pMode) document.querySelector('.tab-btn.p-mode').classList.add('active');
+        renderCards(cat, searchInput.value);
+    }
+
+    function togglePMode() {
+        pMode = !pMode;
+        const btn = document.querySelector('.tab-btn.p-mode');
+        
+        if (pMode) {
+            btn.classList.add('active');
+            fabBtn.style.border = "4px solid #fff";
+            fabBtn.style.boxShadow = "0 0 20px var(--accent-p)";
+            fabBtn.innerHTML = "退出";
+            fabBtn.style.background = "#b45309"; 
+            fabBtn.style.color = "white";
+        } else {
+            btn.classList.remove('active');
+            fabBtn.style.border = "4px solid rgba(255,255,255,0.15)";
+            fabBtn.style.boxShadow = "0 4px 20px rgba(0,0,0,0.5)";
+            fabBtn.innerHTML = "TP<span>模式</span>";
+            fabBtn.style.background = "var(--accent-p)";
+            fabBtn.style.color = "black";
+        }
+        
+        const activeCatBtn = document.querySelector('.tab-btn.active:not(.p-mode)');
+        const cat = activeCatBtn ? activeCatBtn.getAttribute('onclick').match(/'(.*)'/)[1] : 'all';
+        renderCards(cat, searchInput.value);
+    }
+
+    searchInput.addEventListener('input', (e) => {
+        const activeCatBtn = document.querySelector('.tab-btn.active:not(.p-mode)');
+        const cat = activeCatBtn ? activeCatBtn.getAttribute('onclick').match(/'(.*)'/)[1] : 'all';
+        renderCards(cat, e.target.value);
+    });
+
+    // Init
+    renderCards();
+
+</script>
+
+</body>
+</html>
