@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>桃園119大車隊外送現場攻略 v6.0</title>
+    <title>桃園119大車隊外送現場攻略 v7.0</title>
     <style>
         :root {
             --primary: #dc2626; /* Red-600 */
@@ -46,10 +46,10 @@
             font-weight: 800;
             display: flex;
             align-items: center;
-            justify-content: center; /* 修改：置中 */
-            gap: 10px; /* 修改：增加間距 */
+            justify-content: center;
+            gap: 10px;
             margin-bottom: 10px;
-            text-align: center; /* 修改：文字置中 */
+            text-align: center;
         }
         
         .version-tag {
@@ -242,6 +242,7 @@
         .tag-red { background: rgba(220, 38, 38, 0.2); color: #fca5a5; border: 1px solid #dc2626; }
         .tag-blue { background: rgba(59, 130, 246, 0.2); color: #93c5fd; border: 1px solid #3b82f6; }
         .tag-green { background: rgba(16, 185, 129, 0.2); color: #86efac; border: 1px solid #10b981; }
+        .tag-orange { background: rgba(249, 115, 22, 0.2); color: #fdba74; border: 1px solid #f97316; }
 
         /* Flowchart */
         .flow-container {
@@ -376,7 +377,7 @@
 <body>
 
 <header>
-    <h1>桃園119大車隊外送現場攻略 <span class="version-tag">v6.0</span></h1>
+    <h1>桃園119大車隊外送現場攻略 <span class="version-tag">v7.0</span></h1>
     
     <div class="controls-row">
         <div class="guide-btn" onclick="toggleGuide()">📖 說明</div>
@@ -933,93 +934,117 @@
         {
             id: "Sp-15", cat: "special", title: "特殊十五：野外/長途救護 (復興區專屬攻略)",
             content: `
-                <div class="sec-header">🌲 復興區野外/長途救護專章</div>
-                <p>針對桃園復興區及偏遠山區地形特性，建立野外長途運輸之專屬評估與處置標準。本區塊內容經大幅擴充，點擊各項目可展開查看詳細判斷原則。</p>
+                <div class="sec-header">🌲 復興區野外/長途救護專章 (Note 3-13)</div>
+                <p>針對桃園復興區地形特性，擴充建立以下 9 項野外長途運輸評估與處置標準。請點擊項目展開查看。</p>
 
-                <details class="sp-detail">
-                    <summary><span class="tag-block tag-red">環境</span> 1. 冷熱急症：熱衰竭 vs 中暑</summary>
+                <details class="sp-detail" onclick="event.stopPropagation()">
+                    <summary><span class="tag-block tag-red">註3</span> 外部大出血止血 (Hemorrhage)</summary>
                     <div class="sp-content">
-                        <strong>🔥 熱急症 (Heat Illness)</strong><br>
-                        核心區辨重點在於<strong>意識狀態 (CNS Status)</strong>。<br>
+                        <strong>重點原則：</strong>野外長途運送需早期積極止血，避免低血容休克。<br>
                         <ul>
-                            <li><strong>熱衰竭 (Heat Exhaustion)：</strong> 體溫可能升高但 <40°C，皮膚濕冷，意識清楚或僅輕微暈眩。處置：移至陰涼處，補充電解質水份。</li>
-                            <li><strong>熱中暑 (Heat Stroke)：</strong> <span style="color:#fca5a5;">危急！</span>體溫 >40°C，且伴隨<strong>中樞神經異常</strong> (意識不清、譫妄、癲癇、昏迷)。皮膚可能乾熱 (傳統型) 或大汗 (勞動型)。</li>
+                            <li><strong>四肢出血：</strong>若直接加壓無效，儘早使用 <strong>CAT 戰術止血帶</strong>。綁於傷口近心端 5-8cm，轉緊至脈搏消失。</li>
+                            <li><strong>交界處出血：</strong>若無法使用止血帶 (如鼠蹊部、腋下)，使用止血棉填塞傷口並強力加壓至少 3 分鐘。</li>
+                            <li><strong>止血帶鬆綁：</strong>除有醫囑或轉運時間超過 2 小時且有專人評估再灌流風險，原則上在抵達醫院前不鬆綁。</li>
                         </ul>
-                        <strong>野外處置：</strong><br>
-                        1. <strong>立即降溫 (Cool First)：</strong> 在野外若無法立即後送，應先積極降溫。使用<strong>蒸發法</strong>（脫衣、噴水霧、搧風）最有效且不需大量冰塊。<br>
-                        2. <strong>輸液：</strong> 建立 IV 給予 N/S。避免給予退燒藥 (Antipyretics)，無效且傷肝。<br>
-                        <hr style="border:0; border-top:1px dashed #555; margin:10px 0;">
-                        <strong>❄️ 冷急症 (Hypothermia)</strong><br>
-                        <strong>救援崩潰 (Rescue Collapse) & 餘溫效應 (Afterdrop)：</strong><br>
-                        搬運失溫病患嚴禁「直立」或「粗魯晃動」。冰冷的周邊血液若突然回流至核心，會導致核心溫度進一步下降並誘發致死性心律不整 (VF)。<br>
-                        <strong>處置：</strong><br>
-                        - 移除濕衣物，使用防風層。<br>
-                        - 被動回溫（加蓋毛毯、暖暖包置於腋下/鼠蹊），<strong>禁止按摩四肢</strong>。
                     </div>
                 </details>
 
-                <details class="sp-detail">
-                    <summary><span class="tag-block tag-p">生物</span> 2. 蜂螫與蛇咬處置原則</summary>
+                <details class="sp-detail" onclick="event.stopPropagation()">
+                    <summary><span class="tag-block tag-orange">註5</span> 致命性過敏 (Anaphylaxis)</summary>
                     <div class="sp-content">
-                        <strong>🐍 毒蛇咬傷 (Snake Bites)</strong><br>
-                        台灣六大毒蛇主要分為出血性 (龜殼花、赤尾青竹絲、百步蛇) 與神經性 (雨傘節、眼鏡蛇)。<br>
-                        <strong>野外處置 Do's & Don'ts：</strong><br>
+                        <strong>重點原則：</strong>野外過敏可能因延遲送醫而致命，需早期給藥。<br>
                         <ul>
-                            <li><strong>❌ 禁止：</strong> 切開傷口、口對口吸毒、冰敷 (加重組織壞死)、飲酒、使用止血帶 (Tourniquet)。</li>
-                            <li><strong>✅ 正確做法：</strong>
-                                <ol>
-                                    <li><strong>認蛇：</strong> 保持冷靜，拍照或記下特徵。</li>
-                                    <li><strong>除束縛：</strong> 迅速脫除戒指、手錶、手環，因患肢可能在數分鐘內腫脹卡死。</li>
-                                    <li><strong>擺位：</strong> 患肢保持略低於心臟高度。</li>
-                                    <li><strong>彈性繃帶：</strong> 僅建議用於<strong>神經性</strong>毒蛇咬傷（減緩淋巴回流），出血性毒蛇則以寬鬆包紮為主。若無法分辨，則採寬鬆包紮。</li>
-                                </ol>
+                            <li><strong>識別：</strong>呼吸困難、喘鳴 (Stridor)、全身蕁麻疹、低血壓、噁心嘔吐。</li>
+                            <li><strong>處置：</strong>若患者自備 Epipen 或 EMT-P 在場，依醫囑給予 <strong>Epinephrine (1:1000) IM</strong>。</li>
+                            <li><strong>監測：</strong>持續監測呼吸道腫脹情形，若惡化需準備建立進階呼吸道。</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="sp-detail" onclick="event.stopPropagation()">
+                    <summary><span class="tag-block tag-blue">註6</span> TBI & IICP 野外判斷原則</summary>
+                    <div class="sp-content">
+                        <strong>重點原則：</strong>避免 H-Bombs (低氧/低血壓)，預防二次腦傷。<br>
+                        <ul>
+                            <li><strong>Cushing's Triad (庫興氏徵候群)：</strong>高血壓 (SBP上升)、心搏過慢、呼吸不規則。出現此徵候代表瀕臨腦疝脫。</li>
+                            <li><strong>處置目標：</strong>
+                                <br>1. SpO2 > 90% (避免缺氧 Hypoxia)
+                                <br>2. SBP > 110 mmHg (避免低血壓 Hypotension)
+                                <br>3. 抬高床頭 30 度 (若無休克且脊椎固定許可)
                             </li>
+                            <li><strong>瞳孔：</strong>單側瞳孔放大提示同側腦疝脫。</li>
                         </ul>
-                        <hr style="border:0; border-top:1px dashed #555; margin:10px 0;">
-                        <strong>🐝 蜂螫 (Bee Stings)</strong><br>
-                        重點在於偵測<strong>過敏性休克 (Anaphylaxis)</strong>。<br>
-                        - <strong>移除螫針：</strong> 使用信用卡或鈍片刮除，避免擠壓毒囊。<br>
-                        - <strong>休克徵兆：</strong> 呼吸喘鳴、全身蕁麻疹、血壓下降。<br>
-                        - <strong>救命藥物：</strong> EMT-P 或 EMT-II (醫囑下) 儘早給予 Epinephrine IM (成人 0.3mg)。
                     </div>
                 </details>
 
-                <details class="sp-detail">
-                    <summary><span class="tag-block tag-blue">腦傷</span> 3. TBI 與 IICP 野外判斷 (H-Bombs)</summary>
+                <details class="sp-detail" onclick="event.stopPropagation()">
+                    <summary><span class="tag-block tag-green">註8</span> 頸脊椎傷害 (C-Spine)</summary>
                     <div class="sp-content">
-                        在長途運送中，必須嚴格監控顱內壓 (ICP) 升高的徵兆，並避免二次腦損傷。<br><br>
-                        <strong>⚠️ 關鍵判斷：Cushing's Triad (庫興氏徵候群)</strong><br>
-                        若出現以下三徵兆，代表腦幹受壓迫，瀕臨腦疝脫：<br>
-                        1. <strong>高血壓 (Hypertension)</strong> 且脈壓差變大。<br>
-                        2. <strong>心搏過慢 (Bradycardia)</strong>。<br>
-                        3. <strong>呼吸不規則 (Irregular Respiration)</strong>。<br><br>
-                        <strong>💣 避免 H-Bombs (二次腦傷殺手)</strong><br>
-                        受傷的大腦極度脆弱，對於缺氧與低血壓的耐受度極低。<br>
-                        1. <strong>Hypoxia (缺氧)：</strong> 絕對維持 SpO2 > 90% (理想 >94%)。若呼吸抑制，提早插管或使用 BVM。<br>
-                        2. <strong>Hypotension (低血壓)：</strong> 腦灌流壓 (CPP) = MAP - ICP。若血壓低，腦部將無法獲得血流。<strong>目標：SBP > 110 mmHg</strong>。<br>
-                        3. <strong>Head Up：</strong> 若無休克且排除脊椎休克，將床頭抬高 30 度，利用重力幫助顱內靜脈回流，降低 ICP。
+                        <strong>重點原則：</strong>長途運送需兼顧固定與舒適，預防壓瘡。<br>
+                        <ul>
+                            <li><strong>限制性脊椎保護 (SMR)：</strong>除非危急，否則長途運送優先使用<strong>真空氣墊床</strong>取代長背板，減少背部疼痛與躁動。</li>
+                            <li><strong>NEXUS 排除標準：</strong>若患者清醒、無頸背中線痛、無神經學異常、無酒醉藥物影響、無轉移性疼痛，可考慮不需頸圈 (依TP醫囑)。</li>
+                        </ul>
                     </div>
                 </details>
 
-                <details class="sp-detail">
-                    <summary><span class="tag-block tag-green">脊椎</span> 4. 頸脊椎傷害與長途運輸</summary>
+                <details class="sp-detail" onclick="event.stopPropagation()">
+                    <summary><span class="tag-block tag-blue">註9</span> 不穩定肌肉骨骼傷害 (含骨盆)</summary>
                     <div class="sp-content">
-                        <strong>限制性脊椎保護 (SMR) 新觀念：</strong><br>
-                        復興區至市區車程常超過 1 小時，傳統全脊椎固定 (長背板+頸圈) 會導致壓瘡、疼痛躁動，甚至影響呼吸。<br><br>
-                        <strong>✅ 建議做法：</strong><br>
-                        1. <strong>脫困：</strong> 使用長背板或鏟式擔架 (Scoop) 進行脫困與搬運。<br>
-                        2. <strong>轉運：</strong> 一旦上救護車，應盡速將患者移至<strong>真空氣墊床 (Vacuum Mattress)</strong>。<br>
-                        3. <strong>優勢：</strong> 真空氣墊床能順應身體曲線塑形，提供更佳的固定效果，且大幅提升舒適度，減少患者因疼痛掙扎而造成的二次傷害。<br><br>
-                        <strong>神經學檢查 (PMS)：</strong><br>
-                        每次移動病患前後，務必檢查四肢的 P (Pulse 脈搏)、M (Motor 運動)、S (Sensation 感覺)。
+                        <strong>重點原則：</strong>確實固定再移動。<br>
+                        <ul>
+                            <li><strong>骨盆骨折：</strong>高能量撞擊且骨盆不穩定者，使用骨盆固定帶 (位置：大轉子處)，雙腳內八固定。禁止反覆按壓測試。</li>
+                            <li><strong>長骨骨折：</strong>使用抽氣式護木或捲式護木固定上下關節。需評估固定前後 PMS。</li>
+                        </ul>
                     </div>
                 </details>
 
-                <div style="margin-top:15px; font-size:0.9rem; color:#aaa;">
-                    <strong>其他野外重點：</strong><br>
-                    - <strong>暈車管理：</strong> 採半坐臥，視線固定前方，備妥嘔吐袋。<br>
-                    - <strong>止血帶：</strong> 野外長途運送若超過 2 小時，除非有醫囑，否則不建議自行鬆開止血帶，以免發生再灌流傷害或大出血。
-                </div>
+                <details class="sp-detail" onclick="event.stopPropagation()">
+                    <summary><span class="tag-block tag-red">註10</span> 懸吊症候群 (Suspension Syndrome)</summary>
+                    <div class="sp-content">
+                        <strong>發生情境：</strong>高空作業或攀岩者，長時間垂直懸吊於安全帶上，導致下肢血液滯留。<br>
+                        <strong>重點原則：</strong>
+                        <ul>
+                            <li><strong>症狀：</strong>暈眩、冒冷汗、臉色蒼白 (類似休克)。</li>
+                            <li><strong>處置：</strong>救下後，傳統建議採坐姿 (W型腿)，避免突然平躺導致大量缺氧血液回流心臟造成心跳停止 (Reflow Syndrome)。但最新 ERC 指引建議若無意識呼吸，仍應平躺 CPR。若意識清醒，可先採半坐臥姿勢觀察。</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="sp-detail" onclick="event.stopPropagation()">
+                    <summary><span class="tag-block tag-orange">註11</span> 傷口 (Wounds)</summary>
+                    <div class="sp-content">
+                        <strong>重點原則：</strong>清潔與包紮，預防感染。<br>
+                        <ul>
+                            <li><strong>沖洗：</strong>使用大量飲用水或生理食鹽水沖洗傷口，移除沙石髒汙 (Irrigation)。</li>
+                            <li><strong>包紮：</strong>濕潤紗布覆蓋，外層彈性繃帶固定。</li>
+                            <li><strong>穿刺物：</strong>固定不拔除。</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="sp-detail" onclick="event.stopPropagation()">
+                    <summary><span class="tag-block tag-red">註12</span> 熱急症：中暑野外作為 (Heat)</summary>
+                    <div class="sp-content">
+                        <strong>重點原則：</strong>Cool First, Transport Second (先降溫再後送)。<br>
+                        <ul>
+                            <li><strong>中暑識別：</strong>體溫 > 40度 + 意識改變 (CNS異常)。</li>
+                            <li><strong>野外降溫：</strong>脫除衣物，持續灑水並搧風 (蒸發散熱法)。冰敷頸部、腋下、鼠蹊部。</li>
+                            <li><strong>輸液：</strong>建立 IV 補充水分。禁止給予退燒藥。</li>
+                        </ul>
+                    </div>
+                </details>
+
+                <details class="sp-detail" onclick="event.stopPropagation()">
+                    <summary><span class="tag-block tag-blue">註13</span> 冷急症 (Cold)</summary>
+                    <div class="sp-content">
+                        <strong>重點原則：</strong>防止 Afterdrop (餘溫效應)。<br>
+                        <ul>
+                            <li><strong>搬運：</strong>保持水平搬運，動作輕柔，避免四肢冰冷血液回流核心誘發 VF。</li>
+                            <li><strong>回溫：</strong>移除濕衣物，採被動回溫 (毛毯、暖暖包置於軀幹)。禁止摩擦四肢或給予酒精。</li>
+                        </ul>
+                    </div>
+                </details>
             `,
             tp: null
         },
@@ -1138,8 +1163,9 @@
                 tpHtml += `</div>`;
             }
 
-            // Expand tutorial cards by default
-            const expandedClass = pMode || item.cat === 'tutorial' ? 'expanded' : '';
+            // Expand logic: ONLY expand if pMode is active (and item has TP info)
+            // Removed item.cat === 'tutorial' from auto-expand condition
+            const expandedClass = pMode ? 'expanded' : '';
 
             html += `
                 <div class="card ${isPHighlight} ${isTutHighlight} ${expandedClass}" onclick="toggleCard(this)">
