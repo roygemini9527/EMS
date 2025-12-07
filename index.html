@@ -2,8 +2,24 @@
 <html lang="zh-TW">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>桃園119大車隊外送現場攻略 v7.0</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>桃園119大車隊外送現場攻略 v7.0 (PWA版)</title>
+    
+    <!-- PWA & Mobile Web App Meta Tags -->
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="119攻略">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#1f2937">
+
+    <!-- Embedded App Icon (Yellow Background with Blue Star of Life - Recreated from user image) -->
+    <!-- 這是一個內嵌的 SVG 轉 Base64 圖示，無需外部圖片連結即可顯示 -->
+    <link rel="apple-touch-icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImdyYWQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZmQwMDA7c3RvcC1vcGFjaXR5OjEiIC8+PHN0b3Agb2ZZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6I2ZmYjcwMDtzdG9wLW9wYWNpdHk6MSIgLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExMCIgZmlsbD0idXJsKCNncmFkKSIvPjwhLS0gU3RhciBvZiBMaWZlIC0tPjxwYXRoIGZpbGw9IiMwMDMyOTYiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIxMiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZD0iTTI1NiA1NUwyOTYgMTM1SDM4NkwzMTYgMTk1TDM1NiAzMDVMMjU2IDI0NUwxNTYgMzA1TDE5NiAxOTVMMTI2IDEzNUgyMTZMMjU2IDU1WiIgLz48IS0tIFJvZCBvZiBBc2NsZXBpdXMgLS0+PHBhdGggZD0iTTI1NiAxNDVWMzQ1IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjE1IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjU2IDE0NVMzMDAgMTcwIDMwMCAyMTAgMjMwIDIxMCAyMzAgMjYwIDI4MCAyNjAgMjgwIDMyMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+">
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImdyYWQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZmQwMDA7c3RvcC1vcGFjaXR5OjEiIC8+PHN0b3Agb2ZZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6I2ZmYjcwMDtzdG9wLW9wYWNpdHk6MSIgLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExMCIgZmlsbD0idXJsKCNncmFkKSIvPjwhLS0gU3RhciBvZiBMaWZlIC0tPjxwYXRoIGZpbGw9IiMwMDMyOTYiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIxMiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZD0iTTI1NiA1NUwyOTYgMTM1SDM4NkwzMTYgMTk1TDM1NiAzMDVMMjU2IDI0NUwxNTYgMzA1TDE5NiAxOTVMMTI2IDEzNUgyMTZMMjU2IDU1WiIgLz48IS0tIFJvZCBvZiBBc2NsZXBpdXMgLS0+PHBhdGggZD0iTTI1NiAxNDVWMzQ1IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjE1IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjU2IDE0NVMzMDAgMTcwIDMwMCAyMTAgMjMwIDIxMCAyMzAgMjYwIDI4MCAyNjAgMjgwIDMyMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9zdmc+">
+
+    <!-- Embedded Manifest for Android PWA Install -->
+    <link rel="manifest" href='data:application/manifest+json;charset=utf-8,%7B%22name%22%3A%22%E6%A1%83%E5%9C%92119%E6%94%BB%E7%95%A5%22%2C%22short_name%22%3A%22119%E6%94%BB%E7%95%A5%22%2C%22start_url%22%3A%22.%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%23111827%22%2C%22theme_color%22%3A%22%231f2937%22%2C%22icons%22%3A%5B%7B%22src%22%3A%22data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA1MTIgNTEyIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImdyYWQiIHgxPSIwJSIgeTE9IjAlIiB4Mj0iMTAwJSIgeTI9IjEwMCUiPjxzdG9wIG9mZnNldD0iMCUiIHN0eWxlPSJzdG9wLWNvbG9yOiNmZmQwMDA7c3RvcC1vcGFjaXR5OjEiIC8%2BPHN0b3Agb2ZZnNldD0iMTAwJSIgc3R5bGU9InN0b3AtY29sb3I6I2ZmYjcwMDtzdG9wLW9wYWNpdHk6MSIgLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48cmVjdCB3aWR0aD0iNTEyIiBoZWlnaHQ9IjUxMiIgcng9IjExMCIgZmlsbD0idXJsKCNncmFkKSIvPjwhLS0gU3RhciBvZiBMaWZlIC0tPjxwYXRoIGZpbGw9IiMwMDMyOTYiIHN0cm9rZT0iI2ZmZmZmZiIgc3Ryb2tlLXdpZHRoPSIxMiIgc3Ryb2tlLWxpbmVqb2luPSJyb3VuZCIgZD0iTTI1NiA1NUwyOTYgMTM1SDM4NkwzMTYgMTk1TDM1NiAzMDVMMjU2IDI0NUwxNTYgMzA1TDE5NiAxOTVMMTI2IDEzNUgyMTZMMjU2IDU1WiIgLz48IS0tIFJvZCBvZiBBc2NsZXBpdXMgLS0%2BPHBhdGggZD0iTTI1NiAxNDVWMzQ1IiBzdHJva2U9IndoaXRlIiBzdHJva2Utd2lkdGg9IjE1IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48cGF0aCBkPSJNMjU2IDE0NVMzMDAgMTcwIDMwMCAyMTAgMjMwIDIxMCAyMzAgMjYwIDI4MCAyNjAgMjgwIDMyMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSJ3aGl0ZSIgc3Ryb2tlLXdpZHRoPSIxNSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8%2BPC9zdmc%2B%22%2C%22sizes%22%3A%22512x512%22%2C%22type%22%3A%22image%2Fsvg%2Bxml%22%7D%5D%7D'>
+
     <style>
         :root {
             --primary: #dc2626; /* Red-600 */
@@ -24,14 +40,18 @@
             color: var(--text-main);
             margin: 0;
             padding: 0;
-            padding-bottom: 100px;
+            padding-bottom: 100px; /* Space for FAB */
             line-height: 1.6;
+            -webkit-user-select: none; /* Prevent selection for app-like feel */
+            user-select: none;
         }
 
         /* --- Header & Controls --- */
         header {
             background-color: rgba(31, 41, 55, 0.98);
             padding: 12px 16px;
+            /* Support for iPhone Notch area */
+            padding-top: max(12px, env(safe-area-inset-top));
             position: sticky;
             top: 0;
             z-index: 50;
@@ -130,7 +150,8 @@
             background-color: var(--bg-dark);
             border-bottom: 1px solid var(--border);
             position: sticky;
-            top: 118px; 
+            /* Dynamic adjustment for header height usually around 118px */
+            top: 115px; 
             z-index: 40;
             white-space: nowrap;
             -webkit-overflow-scrolling: touch; 
@@ -186,6 +207,8 @@
             align-items: center;
             background: linear-gradient(to right, rgba(255,255,255,0.02), rgba(255,255,255,0.0));
             cursor: pointer;
+            /* Ensure large touch target */
+            min-height: 50px;
         }
         
         .card-title { font-weight: 700; font-size: 1.1rem; color: #fff; line-height: 1.4; }
@@ -205,8 +228,8 @@
         .card.expanded .card-body { display: block; }
 
         /* Content Typography */
-        p { margin: 0 0 10px 0; font-size: 0.95rem; color: #d1d5db; text-align: justify; line-height: 1.7; }
-        ul { margin: 8px 0; padding-left: 20px; }
+        p { margin: 0 0 10px 0; font-size: 0.95rem; color: #d1d5db; text-align: justify; line-height: 1.7; user-select: text; }
+        ul { margin: 8px 0; padding-left: 20px; user-select: text; }
         li { margin-bottom: 8px; color: #e5e7eb; font-size: 0.95rem; }
         strong { color: white; font-weight: 600; }
         .long-text { white-space: pre-line; }
@@ -345,6 +368,8 @@
             font-size: 1.4rem;
             border: 4px solid rgba(255,255,255,0.15);
             transition: transform 0.2s;
+            /* Adjust for safe area */
+            margin-bottom: env(safe-area-inset-bottom);
         }
         .fab span { font-size: 0.75rem; font-weight: normal; margin-top: -4px;}
         .fab:active { transform: scale(0.92); }
@@ -389,7 +414,7 @@
                 <li><strong>搜尋功能：</strong>在搜尋欄輸入關鍵字（如：OHCA、中風、燒傷），系統會自動篩選相關卡片。</li>
                 <li><strong>卡片操作：</strong>點擊卡片標題可展開查看詳細流程、關鍵評估數據與處置細節。</li>
                 <li><strong>TP 模式：</strong>點擊右下角黃色 <strong>TP 按鈕</strong>，畫面將只顯示高級救護技術員 (EMT-P) 的進階處置（如給藥、插管、電擊），過濾掉基礎流程，適合危急時刻快速查閱。</li>
-                <li><strong>離線功能：</strong>請參考分類選單最後一項「📱 離線功能」，將本檔案存入手機，無網路環境亦可使用。</li>
+                <li><strong>手機安裝：</strong>請參考分類選單最後一項「📱 手機安裝教學」，將本檔案存入手機主畫面，即可享有 App 般的操作體驗。</li>
             </ol>
             <div style="text-align:right;margin-top:10px;color:var(--info);cursor:pointer;" onclick="toggleGuide()">[關閉]</div>
         </div>
@@ -404,7 +429,7 @@
     <div class="tab-btn" onclick="filterCat('medical')">內科</div>
     <div class="tab-btn" onclick="filterCat('trauma')">創傷</div>
     <div class="tab-btn" onclick="filterCat('special')">特殊</div>
-    <div class="tab-btn tutorial" onclick="filterCat('tutorial')">📱 離線功能</div>
+    <div class="tab-btn tutorial" onclick="filterCat('tutorial')">📱 手機安裝教學</div>
 </div>
 
 <div class="container" id="contentArea"></div>
@@ -1062,20 +1087,37 @@
 
         // ====== 離線功能 (Offline Tutorial) ======
         {
-            id: "TUT-1", cat: "tutorial", title: "🤖 Android 安卓離線使用教學",
+            id: "TUT-1", cat: "tutorial", title: "🍎 iOS (iPhone) 手機安裝教學",
             content: `
-                <div class="tut-step"><strong>步驟 1：下載檔案</strong><br>將此 HTML 檔案傳送到手機（透過 LINE Keep 或 Email），並選擇「下載」或「儲存」。</div>
-                <div class="tut-step"><strong>步驟 2：開啟檔案</strong><br>打開手機的「檔案 (Files)」App 或「我的檔案」，進入「下載 (Downloads)」資料夾找到該檔案。點擊檔案，系統會問你要用什麼開啟，請選擇 <strong>Chrome</strong>。</div>
-                <div class="tut-step"><strong>步驟 3：加到主畫面 (像 App 一樣)</strong><br>1. 用 Chrome 打開檔案後。<br>2. 點擊右上角「...」選單。<br>3. 點擊「加星號 (☆)」加入書籤，方便下次快速從 Chrome 書籤列開啟。</div>
-                <div class="tut-step"><strong>💡 小撇步</strong><br>建議將此檔案設為 Chrome 首頁或常駐分頁，執勤時解鎖手機即可立即搜尋。</div>
+                <div class="tut-step">
+                    <strong>1. 開啟檔案：</strong><br>務必使用 <strong>Safari</strong> 瀏覽器開啟本頁面。
+                </div>
+                <div class="tut-step">
+                    <strong>2. 點擊分享：</strong><br>點擊螢幕下方的分享圖示 <span style="font-size:1.2rem">📤</span> (方塊向上箭頭)。
+                </div>
+                <div class="tut-step">
+                    <strong>3. 加入主畫面：</strong><br>向下滑動選單，找到並點選 <strong>「加入主畫面」</strong> (Add to Home Screen)。
+                </div>
+                <div class="tut-step">
+                    <strong>4. 完成：</strong><br>按右上角「新增」，桌面即會出現黃色 EMT 圖示 App。
+                </div>
             `, tp: null
         },
         {
-            id: "TUT-2", cat: "tutorial", title: "🍎 iOS iPhone 離線使用教學",
+            id: "TUT-2", cat: "tutorial", title: "🤖 Android 手機安裝教學",
             content: `
-                <div class="tut-step"><strong>步驟 1：儲存檔案</strong><br>在 LINE 或 Email 中點開檔案，點擊角落的「分享按鈕」(方塊箭頭)，向下滑動選單，點擊<strong>「儲存到檔案 (Save to Files)」</strong>，選擇「我的 iPhone (On My iPhone)」，按右上角儲存。</div>
-                <div class="tut-step"><strong>步驟 2：開啟使用</strong><br>回到主畫面，找到並打開灰色的<strong>「檔案 (Files)」</strong> App (iPhone 內建)。點擊「瀏覽」->「我的 iPhone」，找到剛剛存的檔案 (index.html)，點擊即可直接開啟。</div>
-                <div class="tut-step"><strong>💡 小撇步</strong><br>iPhone 會直接用內建預覽器打開，介面與 App 無異。建議執勤期間保持此分頁開啟，解鎖手機即可立即搜尋。</div>
+                <div class="tut-step">
+                    <strong>1. 開啟檔案：</strong><br>務必使用 <strong>Chrome</strong> 瀏覽器開啟本頁面。
+                </div>
+                <div class="tut-step">
+                    <strong>2. 開啟選單：</strong><br>點擊螢幕右上角的選單圖示 <span style="font-size:1.2rem">⋮</span> (三個點)。
+                </div>
+                <div class="tut-step">
+                    <strong>3. 安裝/加入：</strong><br>選擇 <strong>「加到主畫面」</strong> 或 <strong>「安裝應用程式」</strong>。
+                </div>
+                <div class="tut-step">
+                    <strong>4. 完成：</strong><br>依提示確認後，桌面即會出現黃色 EMT 圖示 App。
+                </div>
             `, tp: null
         }
     ];
