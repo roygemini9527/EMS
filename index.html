@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-    <title>桃園119大車隊外送現場攻略 v8.0 (外部讀取版)</title>
+    <title>桃園119大車隊外送現場攻略 v8.1 (完整圖卡版)</title>
     
     <!-- PWA Settings -->
     <meta name="apple-mobile-web-app-capable" content="yes">
@@ -117,7 +117,7 @@
 <body>
 
 <header>
-    <h1>桃園119大車隊外送現場攻略 <span class="version-tag">v8.0</span></h1>
+    <h1>桃園119大車隊外送現場攻略 <span class="version-tag">v8.1</span></h1>
     <div class="controls-row">
         <div class="guide-btn" onclick="toggleGuide()">📖 說明</div>
         <input type="text" class="search-input" id="searchInput" placeholder="🔍 搜尋：OHCA、中風、野外...">
@@ -202,6 +202,7 @@
     }, false);
 
     const protocols = [
+        // ================= 通用 =================
         {
             id: "G-1", cat: "general", title: "通用一：緊急救護現場通用流程",
             flow: ["到達現場 -> 停車於安全位置", "安全評估 (3S)", "自我保護 (BSI)", "判斷是否需支援", "判斷案件屬性"],
@@ -221,6 +222,50 @@
             tp: null
         },
         {
+            id: "G-4", cat: "general", title: "通用四：病情危急度判斷",
+            flow: ["生命徵象檢核", "創傷部位檢核", "創傷機轉檢核", "特殊狀況檢核"],
+            key: [
+                "<strong>危急指標 (成人)：</strong>RR >29或<10、HR >150或<50、SBP >200或<90、GCS<14。",
+                "<strong>高危險機轉：</strong>高處墜落(>6m)、脫困>20分、拋出車外、同車死亡。",
+                "<strong>特殊：</strong>血糖 <60或>500、疑似中風/胸痛、持續抽搐、中毒、急產。"
+            ],
+            tp: null
+        },
+        {
+            id: "G-5", cat: "general", title: "通用五：救護車內救護流程",
+            flow: ["持續監測", "二度評估", "無線電回報", "詳細身體檢查"],
+            key: ["<strong>監測頻率：</strong>危急個案每 5 分鐘；非危急每 15 分鐘。", "<strong>後送姿勢：</strong>清醒/呼吸喘/胸痛/中風 -> 半坐臥；休克/意識不清 -> 平躺；懷孕>20週 -> 左側躺。"],
+            tp: null
+        },
+
+        // ================= 呼吸道 =================
+        {
+            id: "Air-1", cat: "airway", title: "呼吸道一：氣管內管插管 (ET)",
+            flow: ["備物", "預給氧", "插管", "確認位置", "固定"],
+            key: ["<strong>深度：</strong>成人 19-23cm；兒童 (年齡/4)+12。", "<strong>確認：</strong>聽診上腹部(無聲)->肺部(對稱)，EtCO2監測。", "<strong>限制：</strong>嘗試<30秒，失敗改SGA。"],
+            tp: { action: "TP 專用技術", desc: "適應症：OHCA、GCS=3且BVM失效。禁忌：GCS>3、有喉頭反射。", drugs: [] }
+        },
+        {
+            id: "Air-2", cat: "airway", title: "呼吸道二：聲門上呼吸道 (SGA)",
+            flow: ["選擇尺寸", "潤滑", "置入", "通氣測試"],
+            key: ["<strong>適應症：</strong>OHCA、GCS=3且BVM失效。", "<strong>禁忌：</strong>有嘔吐反射、食道病變、意識非昏迷。"],
+            tp: null
+        },
+        {
+            id: "Air-3", cat: "airway", title: "呼吸道三：呼吸道異物哽塞",
+            flow: ["鼓勵咳嗽", "哈姆立克", "昏迷->CPR"],
+            key: ["<strong>昏迷處置：</strong>躺下 -> CPR (30:2)。每次吹氣前<strong>檢查口腔</strong>，有異物才挖。", "<strong>TP：</strong>喉頭鏡直視夾除 (Magill Forceps)。"],
+            tp: null
+        },
+        {
+            id: "Air-4", cat: "airway", title: "呼吸道四：嬰兒異物哽塞",
+            flow: ["拍背壓胸 (5:5)", "昏迷->CPR"],
+            key: ["<strong>拍背壓胸：</strong>頭低腳高，拍背5下，翻身壓胸5下。", "<strong>昏迷：</strong>CPR，檢查口腔有無異物。"],
+            tp: null
+        },
+
+        // ================= 內科 =================
+        {
             id: "Med-1", cat: "medical", title: "非創傷一：OHCA (心跳停止)",
             flow: ["確認無脈搏", "CPR (30:2)", "AED", "進階呼吸道", "給藥"],
             key: ["<strong>高品質 CPR：</strong>按壓 100-120/分，深度 5-6cm。中斷 < 10秒。", "<strong>孕婦 OHCA：</strong>推子宮向左 (LUD) 減少下腔靜脈壓迫。"],
@@ -233,6 +278,24 @@
             tp: { action: "氣霧治療 (Combivent)", desc: "適應症：1歲以上，無心肌梗塞病史，氣喘/COPD 發作。", drugs: [] }
         },
         {
+            id: "Med-3", cat: "medical", title: "非創傷三：意識不清",
+            flow: ["測血糖", "排除低血糖", "評估 AEIOU-TIPS"],
+            key: ["<strong>低血糖：</strong>< 60 mg/dl。給予糖粉/糖漿。", "<strong>高血糖：</strong>> 500 mg/dl 合併脫水，給予 N/S。"],
+            tp: { action: "高濃度葡萄糖", drugs: [{ name: "D50W", dose: "2-4 amp IV", ind: "低血糖意識不清", warn: "確認管路暢通避免滲漏。" }] }
+        },
+        {
+            id: "Med-4", cat: "medical", title: "非創傷四：抽搐",
+            flow: ["保護患者", "給氧", "測血糖", "監測生命徵象"],
+            key: ["<strong>保護：</strong>移開危險物，勿強塞異物入扣。", "<strong>重積狀態：</strong>發作>5分鐘或意識未恢復再發作，屬危急個案。"],
+            tp: null
+        },
+        {
+            id: "Med-5", cat: "medical", title: "非創傷五：致命性過敏",
+            flow: ["給氧", "移除過敏原", "協助 EpiPen"],
+            key: ["<strong>症狀：</strong>呼吸困難、休克、血管性水腫。", "<strong>EpiPen：</strong>注射大腿外側，停留10秒。"],
+            tp: { action: "過敏藥物", drugs: [{ name: "Epinephrine (1:1000)", dose: "0.3-0.5mg IM", ind: "嚴重過敏/休克", warn: "可每 5-15 分鐘重複。" }] }
+        },
+        {
             id: "Med-6", cat: "medical", title: "非創傷六：疑似腦中風",
             flow: ["CPSS (辛辛那提)", "G-FAST (大血管)", "測血糖", "通報"],
             key: ["<strong>G-FAST：</strong>若 Gaze (凝視) 異常，高度懷疑大血管阻塞 (LVO)，需送可執行取栓術 (EVT) 醫院。", "<strong>禁忌：</strong>勿給葡萄糖 (除非低血糖)、勿降血壓 (除非 >220/120)。"],
@@ -243,6 +306,88 @@
             flow: ["12-lead ECG", "排除禁忌", "給藥 (NTG/Aspirin)"],
             key: ["<strong>ECG：</strong>目標 10 分鐘內完成。STEMI 通報導管室。", "<strong>NTG 禁忌：</strong>SBP < 90、HR < 50 或 > 100、24-48h 內服壯陽藥、右心室梗塞。"],
             tp: { action: "MONA", drugs: [{ name: "Aspirin", dose: "300mg 口服", ind: "疑似 AMI", warn: "排除過敏/出血。" }, { name: "NTG", dose: "0.6mg 舌下", ind: "心絞痛", warn: "嚴守禁忌症。" }] }
+        },
+        {
+            id: "Med-8", cat: "medical", title: "非創傷八：急性心臟衰竭",
+            flow: ["端坐呼吸", "給氧", "評估灌流", "TP 處置"],
+            key: ["<strong>症狀：</strong>端坐呼吸、頸靜脈怒張、濕囉音、水腫。", "<strong>處置：</strong>半坐臥，限制輸液。"],
+            tp: { action: "藥物/電治", drugs: [{ name: "NTG", dose: "0.6mg 舌下", ind: "肺水腫且 SBP>90", warn: "同胸痛禁忌。" }] }
+        },
+        {
+            id: "Med-9", cat: "medical", title: "非創傷九：非創傷休克",
+            flow: ["給氧", "保暖", "抬高下肢", "輸液"],
+            key: ["<strong>評估：</strong>意識改變、呼吸快、脈搏快、血壓低、皮膚濕冷。", "<strong>處置：</strong>排除過敏、氣胸、心衰竭後，嘗試輸液。"],
+            tp: null
+        },
+
+        // ================= 創傷 =================
+        {
+            id: "Tra-1", cat: "trauma", title: "創傷一：創傷心臟停止",
+            flow: ["CPR", "止血", "呼吸道", "輸液", "迅速送醫"],
+            key: ["<strong>重點：</strong>優先處理可逆原因 (缺氧、低血容、張力性氣胸)。", "<strong>處置：</strong>限制頸椎移動，盡快送醫。"],
+            tp: { action: "創傷進階", desc: "考慮針刺減壓 (若疑似張力性氣胸)。", drugs: [] }
+        },
+        {
+            id: "Tra-2", cat: "trauma", title: "創傷二：頭部外傷",
+            flow: ["頸椎限制", "GCS 評估", "監測 IICP 徵象"],
+            key: ["<strong>IICP (Cushing's triad)：</strong>血壓升、心跳慢、呼吸不規則。", "<strong>處置：</strong>若休克，輸液目標 SBP 110mmHg (維持腦灌流)。"],
+            tp: null
+        },
+        {
+            id: "Tra-3", cat: "trauma", title: "創傷三：胸部外傷",
+            flow: ["評估氣胸", "開放性傷口處置", "給氧"],
+            key: ["<strong>開放性氣胸：</strong>三面封貼 (留一邊排氣)。", "<strong>張力性氣胸：</strong>休克、頸靜脈怒張、氣管偏移 -> TP 針刺減壓。"],
+            tp: null
+        },
+        {
+            id: "Tra-4", cat: "trauma", title: "創傷四：腹部外傷",
+            flow: ["傷口處置", "臟器外露處置", "骨盆評估"],
+            key: ["<strong>臟器外露：</strong>生理食鹽水濕紗覆蓋，勿推回。", "<strong>骨盆骨折：</strong>骨盆帶固定，避免晃動。"],
+            tp: null
+        },
+        {
+            id: "Tra-5", cat: "trauma", title: "創傷五：肢體外傷",
+            flow: ["止血", "固定", "斷肢處理"],
+            key: ["<strong>大出血：</strong>直接加壓 -> 止血帶 (CAT)。", "<strong>斷肢：</strong>濕紗包裹 -> 裝袋 -> 置入冰水 (隔水保冰，勿直觸冰塊)。"],
+            tp: null
+        },
+        {
+            id: "Tra-6", cat: "trauma", title: "創傷六：創傷出血性休克",
+            flow: ["止血", "輸液", "保暖", "TXA (TP)"],
+            key: ["<strong>目標血壓：</strong>無 TBI 維持 SBP 90 (摸得到橈動脈)；有 TBI 維持 SBP 110。", "<strong>輸液：</strong>成人 250ml/次。"],
+            tp: { action: "TXA 止血", drugs: [{ name: "Transamine", dose: "1g 滴注 >10分", ind: "嚴重出血且 SBP<90", warn: "傷後 3hr 內使用。" }] }
+        },
+        {
+            id: "Tra-7", cat: "trauma", title: "創傷七：張力性氣胸",
+            flow: ["高濃度氧", "針刺減壓 (TP)"],
+            key: ["<strong>徵象：</strong>單側呼吸音消失、休克、頸靜脈怒張。", "<strong>處置：</strong>TP 於患側第 2 或 5 肋間執行針刺減壓。"],
+            tp: { action: "針刺減壓", desc: "位置：鎖骨中線第2肋間 或 腋前線第5肋間 (14G/16G針頭)。", drugs: [] }
+        },
+
+        // ================= 特殊 =================
+        {
+            id: "Sp-1", cat: "special", title: "特殊一：火場救出",
+            flow: ["高濃度氧", "評估氣道灼傷", "TP 氣霧治療"],
+            key: ["<strong>CO 中毒：</strong>一律給 NRM 15L/min。", "<strong>氣道灼傷：</strong>聲音沙啞、碳粒、喘鳴 -> 預防性插管/氣霧治療。"],
+            tp: { action: "氣霧治療", drugs: [{ name: "Epinephrine", dose: "1mg + 3ml N/S", ind: "上呼吸道水腫/喘鳴", warn: "氧氣流速 6L/min。" }] }
+        },
+        {
+            id: "Sp-2", cat: "special", title: "特殊二：灼燙傷",
+            flow: ["沖水降溫", "評估面積/深度", "保暖"],
+            key: ["<strong>沖水：</strong>至少 15 分鐘 (大面積注意失溫)。", "<strong>九的法則(成人)：</strong>頭9、手9x2、前軀18、後軀18、腳18x2、陰部1。"],
+            tp: { action: "輸液治療", desc: "大面積 (>10%) 建立管路給予輸液。", drugs: [] }
+        },
+        {
+            id: "Sp-4", cat: "special", title: "特殊四：中毒 (有機磷)",
+            flow: ["自我防護", "除汙", "辨識 Killer B"],
+            key: ["<strong>SLUDGE：</strong>流口水、流淚、失禁、腹瀉、嘔吐。", "<strong>Killer B：</strong>緩脈、支氣管痙攣/分泌物。"],
+            tp: { action: "解毒劑", drugs: [{ name: "Atropine", dose: "1-2 mg IV", ind: "有機磷中毒+Killer B", warn: "重複給予至口水減少。" }] }
+        },
+        {
+            id: "Sp-5", cat: "special", title: "特殊五：急產",
+            flow: ["評估產兆", "準備生產包", "接生"],
+            key: ["<strong>產兆：</strong>陣痛<2分、破水、落紅、有便意。", "<strong>接生：</strong>保護會陰，先下壓(前肩)後上提(後肩)。", "<strong>臍帶：</strong>兩處夾住(距嬰兒10cm)，無特殊狀況不斷臍。"],
+            tp: null
         },
         {
             id: "Sp-15", cat: "special", title: "特殊十五：野外/長途救護 (復興區專屬)",
@@ -280,7 +425,29 @@
                         若需固定，長途運送建議使用真空氣墊床取代長背板 (避免壓瘡)。
                     </div>
                 </details>
+                
+                <details class="sp-detail" onclick="event.stopPropagation()">
+                    <summary><span class="tag-block tag-orange">註12</span> 熱急症 (中暑)</summary>
+                    <div class="sp-content">
+                        <strong>目標：</strong>30分鐘內降溫至 39度。<br>
+                        <strong>方法：</strong>冷水浸泡 (最快)、潑水+搧風。意識清醒可喝水。
+                    </div>
+                </details>
+
+                <details class="sp-detail" onclick="event.stopPropagation()">
+                    <summary><span class="tag-block tag-blue">註13</span> 冷急症 (失溫)</summary>
+                    <div class="sp-content">
+                        <strong>嚴重失溫 (<32度)：</strong>意識不清，停止顫抖。<br>
+                        <strong>處置：</strong>水平搬運 (避免血液回流衝擊心臟导致 VF)。主動回溫 (暖暖包置於軀幹)。
+                    </div>
+                </details>
             `,
+            tp: null
+        },
+        {
+            id: "Sp-16", cat: "special", title: "特殊十六：高威脅環境",
+            flow: ["尋求掩護", "熱區/暖區/冷區", "快速撤離"],
+            key: ["<strong>熱區 (Hot Zone)：</strong>有直接威脅。僅做止血帶止血，快速撤離。", "<strong>暖區 (Warm Zone)：</strong>潛在威脅。快速 XABCDE，儘快移至冷區。"],
             tp: null
         },
         { id: "TUT-1", cat: "tutorial", title: "安裝教學", content: "請使用瀏覽器選單中的「加入主畫面」。", tp: null }
